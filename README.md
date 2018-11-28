@@ -1,2 +1,3 @@
-# udemy.setup.wordpress.on.a.vps
-Step By Step - Setting Up WordPress on a VPS
+# Step By Step - Setting Up WordPress on a VPS
+
+[Link to course](https://www.udemy.com/wordpress-the-definitive-course)
