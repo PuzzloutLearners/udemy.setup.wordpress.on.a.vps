@@ -1,7 +1,7 @@
 
 # $1 => user
 # $2 => IP address of server
-
+# $3 => path to id_rsa.pub
 # Create the key pair
 ssh-keygen -t rsa -b 4096
 
