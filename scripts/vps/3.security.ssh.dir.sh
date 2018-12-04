@@ -44,4 +44,4 @@ sudo nano sshd_config
 # Finally restart ssh
 sudo service ssh restart
 
-logout
+exit
