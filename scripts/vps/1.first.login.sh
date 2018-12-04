@@ -41,7 +41,7 @@ visudo
 echo "Navigate the /etc/ssh dir"
 cd /etc/ssh
 
-# Under "Authentication", update Authentication to no
+# Under "Authentication", update PermitRootLogin to no
 echo "Edit the ssh conf"
 nano sshd_config
 
@@ -49,6 +49,6 @@ echo "Restart ssh service"
 service ssh restart
 
 echo "Disconnect from Root"
-logout
+exit
 
 # Try to connect from puzzlout
