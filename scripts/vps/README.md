@@ -1,6 +1,12 @@
 # How to deploy?
 
 ```
+sudo apt-get update && apt-get install git
+
+git config --global credential.helper 'store --file ~/.my-credentials'
+git config --global user.name "Jeremie Litzler"
+git config --global user.email puzzlout@gmail.com
+
 git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps
 bash 1.check.updates/script.sh 
 bash 2.new.admin.user/script.sh new_username
