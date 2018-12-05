@@ -1,13 +1,6 @@
 #!/bin/bash
 
 # $1 => UNIX user to create
-
-sudo apt-get update && apt-get install git
-
-git config --global credential.helper 'store --file ~/.my-credentials'
-git config --global user.name "Jeremie Litzler"
-git config --global user.email puzzlout@gmail.com
-
 ###############################################################################
 ## Server commons installs
 ## 
