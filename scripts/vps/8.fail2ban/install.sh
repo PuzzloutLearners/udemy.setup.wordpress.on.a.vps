@@ -1,4 +1,6 @@
+#!/bin/sh
 
+cd
 
 sudo apt-get install fail2ban
 cd /etc/fail2ban
