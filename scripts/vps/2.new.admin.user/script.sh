@@ -21,6 +21,9 @@ fi
 echo "Add a new user"
 adduser $1
 
+echo "Add $1 to the admin group"
+usermod -a -G adm puzzlout
+
 echo "Check nano is installed to the latest version"
 apt-get install nano
 
