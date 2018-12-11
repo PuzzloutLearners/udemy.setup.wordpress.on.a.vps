@@ -1,9 +1,17 @@
-sudo apt-get update
-sudo apt-get upgrade
-adduser puzzlout
-usermod -a -G adm puzzlout
+sudo apt-get -qq update && apt-get -qq upgrade
+username="puzzlout"
+#pass="Udemy2018"
+#shift 2
+#fname="$*"
 
-visudo
+#useradd -m -s /bin/bash -c "$fname" "$username"
+#echo "$username:$pass" | chpasswd
+adduser $username
+usermod -a -G adm $username
+
+sed -i '/root/i\
+'$username'    ALL=(ALL:ALL) ALL
+' /etc/sudoers
 
 # Under "User privilege specification", add the following line
 # puzzlout  ALL=(ALL:ALL) ALL
@@ -11,25 +19,27 @@ visudo
 # CTRL + X then Y then Enter
 cd /etc/ssh
 # Under "Authentication", update PermitRootLogin to no
-nano sshd_config
+#nano sshd_config
+sudo sed -i -e 's:PermitRootLogin yes:PermitRootLogin no:g' sshd_config
+
 service ssh restart
 exit
 
 # Connect to VPS
 cd 
+nano id_rsa.pub
 git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps
 mkdir .ssh
 cd .ssh/
 touch authorized_keys
 # If using CodeAnywhere
-nano id_rsa.pub
-cat id_rsa.pub >> authorized_keys
-rm id_rsa.pub
+cat /home/puzzlout/id_rsa.pub >> authorized_keys
+rm /home/puzzlout/id_rsa.pub
 sudo chmod 400 authorized_keys
 cd ..
 sudo chmod 700 .ssh
 sudo chattr +i .ssh
-cd /etc/ssh/
+cd
 sudo cp udemy.setup.wordpress.on.a.vps/scripts/vps/3.security.ssh.dir/assets/sshd_config.txt /etc/ssh/sshd_config
 # Uncomment the line "#AuthorizedKeysFile     %h/.ssh/authorized_keys"
 # Under "Change to no to disable tunnelled clear text passwords", set no to "PasswordAuthentication"
@@ -60,7 +70,7 @@ exit
 
 sudo iptables -L
 
-sudo apt-get install apache2
+sudo apt-get -qq install apache2
 sudo rm /var/www/html/index.html
 
 # Create a new one from the file "new.index.html"
@@ -84,7 +94,7 @@ sudo a2enmod rewrite
 sudo service apache2 restart
 
 cd
-sudo apt-get install mysql-server php-mysql
+sudo apt-get -qq install mysql-server php-mysql
 sudo mysql_secure_installation
 
 mysql -u root -p
@@ -139,7 +149,7 @@ sudo systemctl restart mysql
 #	./mysqltuner.pl
 
 # Php
-sudo apt-get install php libapache2-mod-php php-mcrypt php-curl php-gd php-mbstring php-mcrypt php-xml php-xmlrpc
+sudo apt-get -qq install php libapache2-mod-php php-mcrypt php-curl php-gd php-mbstring php-mcrypt php-xml php-xmlrpc
 php -v
 
 cd /etc/php/7.0/apache2/
@@ -147,11 +157,11 @@ sudo cp php.ini php.ini.bak
 sudo cp /home/puzzlout/udemy.setup.wordpress.on.a.vps/scripts/vps/7.php/assets/php.ini.optimized php.ini
 
 cd /var/www/html/
-sudo nano info.php
+#sudo nano info.php
 # Paste phpinfo(); in the file
 # Check the page in the browser
 # Finally, remove the file.
-sudo rm info.php
+#sudo rm info.php
 
 cd /etc/apache2/mods-available/
 sudo cp dir.conf dir.conf.bak
@@ -161,7 +171,7 @@ sudo cp /home/puzzlout/udemy.setup.wordpress.on.a.vps/scripts/vps/7.php/assets/d
 
 sudo service apache2 restart
 
-sudo apt-get install fail2ban
+sudo apt-get -qq install fail2ban
 cd /etc/fail2ban
 sudo cp jail.conf jail.local
 sudo cp /home/puzzlout/udemy.setup.wordpress.on.a.vps/scripts/vps/8.fail2ban/assets/jail.local jail.local
@@ -172,21 +182,36 @@ sudo cp defaults-debian.conf defaults-debian.conf.custom
 
 cd
 cd /var/www
-domain=udemy.puzzlout.com
+templatedomain=template.com
+adminemail="puzzlout@gmail.com"
 sudo mkdir -p $domain/public_html 
 cd /etc/apache2/sites-available/
 sudo cp 000-default.conf $domain.conf
 # https://stackoverflow.com/questions/16790793/how-to-replace-strings-containing-slashes-with-sed
-sudo sed -i -e 's:ServerAdmin webmaster@localhost:ServerAdmin puzzlout@gmail.com:g' $domain.conf
-sudo sed -i -e 's:DocumentRoot /var/www/html:DocumentRoot /var/www/$domain/public_html:g' $domain.conf
+sudo sed -i -e 's:ServerAdmin webmaster@localhost:ServerAdmin '$adminemail':g' $domain.conf
+sudo sed -i -e 's:DocumentRoot /var/www/html:DocumentRoot /var/www/'$templatedomain'/public_html:g' $templatedomain.conf
 sudo sed -i '/ServerAdmin/i\
-        ServerName '$domain'
+        ServerName '$templatedomain'
 ' $domain.conf
 sudo sed -i '/ServerAdmin/i\
-        ServerAlias www.'$domain'
+        ServerAlias www.'$templatedomain'
 ' $domain.conf
+sudo a2ensite $templatedomain.conf
+sudo service apache2 reload
+cd 
+sudo cp udemy.setup.wordpress.on.a.vps/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/$templatedomain/public_html/index.html
+sudo sed -i -e 's:Coming soon:'$templatedomain' website is coming soon:g' /var/www/$templatedomain/public_html/index.html
+
+domain=udemy.puzzlout.com
+cd /var/www
+sudo mkdir -p $domain/public_html 
+cd /etc/apache2/sites-available/
+sudo cp $templatedomain.conf $domain.conf
+# https://stackoverflow.com/questions/16790793/how-to-replace-strings-containing-slashes-with-sed
+sudo sed -i -e 's:'$templatedomain':'$domain':g' $domain.conf
 sudo a2ensite $domain.conf
 sudo service apache2 reload
 cd 
 sudo cp udemy.setup.wordpress.on.a.vps/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/$domain/public_html/index.html
 sudo sed -i -e 's:Coming soon:'$domain' website is coming soon:g' /var/www/$domain/public_html/index.html
+
