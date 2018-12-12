@@ -9,6 +9,12 @@ username="puzzlout"
 adduser $username
 usermod -a -G adm $username
 
+su $username
+cd
+mkdir .ssh
+git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps
+exit 
+
 sed -i '/root/i\
 '$username'    ALL=(ALL:ALL) ALL
 ' /etc/sudoers
@@ -26,15 +32,19 @@ service ssh restart
 exit
 
 # Connect to VPS
+clear
 cd 
-nano id_rsa.pub
-git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps
 mkdir .ssh
 cd .ssh/
 touch authorized_keys
 # If using CodeAnywhere
+nano id_rsa.pub
 cat /home/puzzlout/id_rsa.pub >> authorized_keys
 rm /home/puzzlout/id_rsa.pub
+# If using Terminal
+cat id_rsa.pub >> authorized_keys
+rm id_rsa.pub
+
 sudo chmod 400 authorized_keys
 cd ..
 sudo chmod 700 .ssh

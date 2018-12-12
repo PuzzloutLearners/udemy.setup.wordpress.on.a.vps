@@ -4,7 +4,7 @@ When you manage several VPSes, there is a technique to transform the command:
 
 `ssh user@ip`
 
-into 
+into
 
 `ssh myvps1`.
 
@@ -24,12 +24,12 @@ Host vpsname1
  HostName ip_vps1
  IdentityFile ~/.ssh/id_rsa
  ServerAliveInterval 120
- ServerAliverCountMax 30
- ```
- 
- Then you continue with the following commands:
- 
- ```sh
- cd
- ssh vpsname1
- ```
+ ServerAliveCountMax 30
+```
+
+Then you continue with the following commands:
+
+```sh
+cd
+ssh vpsname1
+```
