@@ -1,0 +1,12 @@
+Site:                   udemy2.puzzlout.com
+Db name:                udemy2_7Ph6Uq (For prefix, use https://www.random.org/passwords/?num=1&len=6&format=plain&rnd=new)
+Db user:                udemy2_u_7Ph6Uq (For prefix, use https://www.random.org/passwords/?num=1&len=6&format=plain&rnd=new)
+Db password:            P9CzxXRpEFaNSkJn (Use https://www.random.org/passwords/?num=1&len=16&format=plain&rnd=new)
+
+Admin WP user:          udemy2_JzejnPfmb8WhqMT7 (Use https://www.random.org/passwords/?num=1&len=6&format=plain&rnd=new)
+Admin WP password:      w9BAT5msH6YA56Pr (Use https://www.random.org/passwords/?num=1&len=16&format=plain&rnd=new)
+Admin e-mail:           puzzlout@gmail.com
+Wordpress table prefix: udemy2_kqfTRc_ (Use https://www.random.org/passwords/?num=1&len=6&format=plain&rnd=new)
+
+Site URL:               http://udemy.puzzlout.com
+Site title:             Udemy 1 site
