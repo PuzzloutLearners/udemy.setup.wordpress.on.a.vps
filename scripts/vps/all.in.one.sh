@@ -240,3 +240,13 @@ sudo apt-get -qq install mailutils
 
 #Manual monitoring utility
 sudo apt-get -qq install htop
+
+# Install WP-CLI
+sudo apt-get --qq install curl
+cd 
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar 
+chmod +x wp-cli.phar 
+sudo mv wp-cli.phar /usr/local/bin/wp
+
+wp --info
+
