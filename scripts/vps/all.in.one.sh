@@ -235,3 +235,8 @@ sudo service apache2 reload
 # Remove the html folder as it is not useful anymore.
 sudo rm -R /var/www/html
 
+# Setup e-mail
+sudo apt-get -qq install mailutils
+
+#Manual monitoring utility
+sudo apt-get -qq install htop
