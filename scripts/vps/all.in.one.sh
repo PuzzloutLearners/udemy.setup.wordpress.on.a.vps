@@ -1,18 +1,24 @@
+clear
 sudo apt-get -qq update && apt-get -qq upgrade
 username="puzzlout"
-#pass="Udemy2018"
+#pass=""
 #shift 2
 #fname="$*"
 
 #useradd -m -s /bin/bash -c "$fname" "$username"
 #echo "$username:$pass" | chpasswd
 adduser $username
+
+# Connect to VPS with $username to test it
+# Then reconnect as root
+username="puzzlout"
 usermod -a -G adm $username
 
 su $username
 cd
 mkdir .ssh
 git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps
+ls -l
 exit 
 
 sed -i '/root/i\
@@ -63,7 +69,6 @@ git config --global credential.helper 'store --file ~/.my-credentials'
 git config --global user.name "Jeremie Litzler"
 git config --global user.email puzzlout@gmail.com
 
-sudo iptables -L
 sudo cp udemy.setup.wordpress.on.a.vps/scripts/vps/4.setup.firewall/assets/firewall-rules.txt /etc/iptables.firewall.rules
 # Copy the content of the asset file "firewall-rules.txt" into "iptables.firewall.rules"
 
@@ -159,6 +164,7 @@ sudo systemctl restart mysql
 #	./mysqltuner.pl
 
 # Php
+cd
 sudo apt-get -qq install php libapache2-mod-php php-mcrypt php-curl php-gd php-mbstring php-mcrypt php-xml php-xmlrpc
 php -v
 
@@ -166,7 +172,7 @@ cd /etc/php/7.0/apache2/
 sudo cp php.ini php.ini.bak
 sudo cp /home/puzzlout/udemy.setup.wordpress.on.a.vps/scripts/vps/7.php/assets/php.ini.optimized php.ini
 
-cd /var/www/html/
+#cd /var/www/html/
 #sudo nano info.php
 # Paste phpinfo(); in the file
 # Check the page in the browser
@@ -191,27 +197,24 @@ sudo systemctl restart fail2ban
 sudo cp defaults-debian.conf defaults-debian.conf.custom
 
 cd
-cd /var/www
 templatedomain=template.com
 adminemail="puzzlout@gmail.com"
-sudo mkdir -p $domain/public_html 
 cd /etc/apache2/sites-available/
-sudo cp 000-default.conf $domain.conf
+sudo cp 000-default.conf $templatedomain.conf
 # https://stackoverflow.com/questions/16790793/how-to-replace-strings-containing-slashes-with-sed
-sudo sed -i -e 's:ServerAdmin webmaster@localhost:ServerAdmin '$adminemail':g' $domain.conf
+sudo sed -i -e 's:ServerAdmin webmaster@localhost:ServerAdmin '$adminemail':g' $templatedomain.conf
 sudo sed -i -e 's:DocumentRoot /var/www/html:DocumentRoot /var/www/'$templatedomain'/public_html:g' $templatedomain.conf
 sudo sed -i '/ServerAdmin/i\
         ServerName '$templatedomain'
-' $domain.conf
+' $templatedomain.conf
 sudo sed -i '/ServerAdmin/i\
         ServerAlias www.'$templatedomain'
-' $domain.conf
-sudo a2ensite $templatedomain.conf
-sudo service apache2 reload
-cd 
-sudo cp udemy.setup.wordpress.on.a.vps/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/$templatedomain/public_html/index.html
-sudo sed -i -e 's:Coming soon:'$templatedomain' website is coming soon:g' /var/www/$templatedomain/public_html/index.html
+' $templatedomain.conf
+#sudo a2ensite $templatedomain.conf
+#sudo service apache2 reload
 
+cd 
+templatedomain=template.com
 domain=udemy.puzzlout.com
 cd /var/www
 sudo mkdir -p $domain/public_html 
@@ -224,4 +227,11 @@ sudo service apache2 reload
 cd 
 sudo cp udemy.setup.wordpress.on.a.vps/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/$domain/public_html/index.html
 sudo sed -i -e 's:Coming soon:'$domain' website is coming soon:g' /var/www/$domain/public_html/index.html
+
+# Disable the apache default website
+sudo a2dissite 000-default.conf
+sudo service apache2 reload
+
+# Remove the html folder as it is not useful anymore.
+sudo rm -R /var/www/html
 

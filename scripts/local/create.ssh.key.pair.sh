@@ -8,7 +8,9 @@ ssh-keygen -t rsa -b 4096
 # Hit return on file name prompt
 # Type a passphrase with spaces
 
+user="puzzlout"
+ip="139.162.157.159"
 # Copy securely the public key to the server
-scp $3id_rsa.pub $1@$2:/home/$1/.ssh
+scp .ssh/id_rsa.pub $user@$ip:/home/$user/.ssh
 
 # Type the password
