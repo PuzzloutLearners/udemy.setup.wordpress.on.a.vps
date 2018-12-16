@@ -1,4 +1,4 @@
-CREATE DATABASE db;
-GRANT ALL PRIVILEGES ON db.* TO 'user'@'localhost' IDENTIFIED BY 'pw';
-SHOW GRANTS FOR 'user'@'localhost';
+CREATE DATABASE dbname;
+GRANT ALL PRIVILEGES ON dbname.* TO 'dbuser'@'localhost' IDENTIFIED BY 'dbuserpwd';
+SHOW GRANTS FOR 'dbuser'@'localhost';
 FLUSH PRIVILEGES;
