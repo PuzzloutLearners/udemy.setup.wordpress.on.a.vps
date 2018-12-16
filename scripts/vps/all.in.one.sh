@@ -1,5 +1,5 @@
 clear
-sudo apt-get -qq update && apt-get -qq upgrade
+sudo apt-get -qq update && apt-get -qq upgrade && apt-get -qq dist-upgrade
 username="puzzlout"
 #pass=""
 #shift 2
@@ -187,6 +187,7 @@ sudo cp /home/puzzlout/udemy.setup.wordpress.on.a.vps/scripts/vps/7.php/assets/d
 
 sudo service apache2 restart
 
+cd
 sudo apt-get -qq install fail2ban
 cd /etc/fail2ban
 sudo cp jail.conf jail.local
@@ -196,44 +197,15 @@ sudo cp /home/puzzlout/udemy.setup.wordpress.on.a.vps/scripts/vps/8.fail2ban/ass
 sudo systemctl restart fail2ban
 sudo cp defaults-debian.conf defaults-debian.conf.custom
 
-cd
-templatedomain=template.com
-adminemail="puzzlout@gmail.com"
-cd /etc/apache2/sites-available/
-sudo cp 000-default.conf $templatedomain.conf
-# https://stackoverflow.com/questions/16790793/how-to-replace-strings-containing-slashes-with-sed
-sudo sed -i -e 's:ServerAdmin webmaster@localhost:ServerAdmin '$adminemail':g' $templatedomain.conf
-sudo sed -i -e 's:DocumentRoot /var/www/html:DocumentRoot /var/www/'$templatedomain'/public_html:g' $templatedomain.conf
-sudo sed -i '/ServerAdmin/i\
-        ServerName '$templatedomain'
-' $templatedomain.conf
-sudo sed -i '/ServerAdmin/i\
-        ServerAlias www.'$templatedomain'
-' $templatedomain.conf
-#sudo a2ensite $templatedomain.conf
-#sudo service apache2 reload
 
-cd 
-templatedomain=template.com
-domain=udemy.puzzlout.com
-cd /var/www
-sudo mkdir -p $domain/public_html 
-cd /etc/apache2/sites-available/
-sudo cp $templatedomain.conf $domain.conf
-# https://stackoverflow.com/questions/16790793/how-to-replace-strings-containing-slashes-with-sed
-sudo sed -i -e 's:'$templatedomain':'$domain':g' $domain.conf
-sudo a2ensite $domain.conf
-sudo service apache2 reload
-cd 
-sudo cp udemy.setup.wordpress.on.a.vps/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/$domain/public_html/index.html
-sudo sed -i -e 's:Coming soon:'$domain' website is coming soon:g' /var/www/$domain/public_html/index.html
+bash udemy.setup.wordpress.on.a.vps/scripts/vps/9.create.website/create.template.conf.sh
 
-# Disable the apache default website
-sudo a2dissite 000-default.conf
-sudo service apache2 reload
-
-# Remove the html folder as it is not useful anymore.
-sudo rm -R /var/www/html
+domain="udemy.puzzlout.com"
+bash udemy.setup.wordpress.on.a.vps/scripts/vps/9.create.website/create.new.site.conf.sh $domain
+domain="udemy2.puzzlout.com"
+bash udemy.setup.wordpress.on.a.vps/scripts/vps/9.create.website/create.new.site.conf.sh $domain
+domain="udemy3.puzzlout.com"
+bash udemy.setup.wordpress.on.a.vps/scripts/vps/9.create.website/create.new.site.conf.sh $domain
 
 # Setup e-mail
 sudo apt-get -qq install mailutils
