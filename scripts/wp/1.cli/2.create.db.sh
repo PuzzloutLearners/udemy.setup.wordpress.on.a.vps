@@ -4,39 +4,42 @@ root_mysql_user="puzzlout"
 # Constants
 max_random_str_size_generic=6
 max_random_str_size_pwd=16
-project="udemy3"
-project_email="puzzlout@gmail.com"
-project_url="http://udemy3.puzzlout.com"
-project_url="Project 3"
+project="udemy"
+projectemail="puzzlout@gmail.com"
+projecturl="http://udemy.puzzlout.com"
+projecttitle="Project 1"
 
 # Variables
-db_random_pwd=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_pwd};echo;)
+dbrandompwd=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_pwd};echo;)
 dbdetailprefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_generic};echo;)
 
-wp_user_random_pwd=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_pwd};echo;)
-wp_user_prefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_generic};echo;)
+wpuserrandompwd=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_pwd};echo;)
+wpuserprefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_generic};echo;)
 
-dbname="$project.$db_detail_prefix"
-dbuser="$project.u.$db_detail_prefix"
-dbuserpwd=$random_pwd
+dbname="$project"_"$dbdetailprefix"
+dbuser="$project"_u_"$dbdetailprefix"
+dbuserpwd=$dbrandompwd
 
-wp_adm_user="$project.$wp_user_prefix"
-wp_adm_user_pwd=$wp_user_random_pwd
-wp_adm_user_email=$project_email
-wp_table_prefix="$project.$dbdetailprefix"_
+wpadmuser="$project"_"$wpuserprefix"
+wpadmuserpwd=$wpuserrandompwd
+wpadmuseremail=$projectemail
+wptableprefix="$project"_"$dbdetailprefix"_
 
 echo $dbname
 echo $dbuser
 echo $dbuserpwd
-echo $wp_adm_user
-echo $wp_adm_user_pwd
-echo $wp_table_prefix
+echo $wpadmuser
+echo $wpadmuserpwd
+echo $wptableprefix
 
+mkdir wp.db.prepare
+cd wp.db.prepare
+templatesqlfile="db.create.template.sql"
+projectsqlfile="db.create.$project.sql"
+cp ../udemy.setup.wordpress.on.a.vps/scripts/wp/1.cli/assets/$templatesqlfile $projectsqlfile
 
-mysql -u $username -p
+sed -i -e 's:dbname:'$dbname':g' $projectsqlfile
+sed -i -e 's:dbusername:'$dbuser':g' $projectsqlfile
+sed -i -e 's:dbuserpwd:'$dbuserpwd':g' $projectsqlfile
 
-# The following are mysql queries
-CREATE DATABASE udemy2_7Ph6Uq;
-GRANT ALL PRIVILEGES ON udemy2_7Ph6Uq.* TO 'udemy2_u_7Ph6Uq'@'localhost' IDENTIFIED BY 'P9CzxXRpEFaNSkJn';
-SHOW GRANTS FOR 'udemy2_u_7Ph6Uq'@'localhost';
-FLUSH PRIVILEGES;
+mysql -u $root_mysql_user -p < $projectsqlfile
