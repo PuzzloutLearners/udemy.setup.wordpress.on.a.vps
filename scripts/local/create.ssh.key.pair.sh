@@ -3,6 +3,7 @@
 # $2 => IP address of server
 # $3 => path to id_rsa.pub
 # Create the key pair
+mkdir .ssh
 ssh-keygen -t rsa -b 4096
 
 # Hit return on file name prompt
