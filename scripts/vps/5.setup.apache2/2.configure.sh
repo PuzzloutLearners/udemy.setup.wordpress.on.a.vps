@@ -10,7 +10,7 @@ if [[ $2 == "" ]]
 		exit 1;
 fi
 username=$1
-vpsinstallerdir=$2
+vpsinstaller=$2
 # Create a new one from the file "new.index.html"
 sudo cp $vpsinstaller/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/html/index.html
 cd /etc/apache2/conf-available/

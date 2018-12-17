@@ -2,8 +2,11 @@
 
 # Inputs :
 # $1    =>  the domain name
-
-# TODO : add check that the $1 input is not empty.
+if [[ $1 == "" ]]
+	then
+		printf "The domain to install is required.\n"
+		exit 1;
+fi
 
 cd 
 templatedomain=template.com
