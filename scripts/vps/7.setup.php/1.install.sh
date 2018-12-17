@@ -14,7 +14,7 @@ vpsinstallerdir=$2
 
 cd
 
-sudo apt-get install -qq php libapache2-mod-php php-mcrypt php-curl php-gd php-mbstring php-mcrypt php-xml php-xmlrpc
+sudo apt-get -qq install php libapache2-mod-php php-mcrypt php-curl php-gd php-mbstring php-mcrypt php-xml php-xmlrpc
 php -v
 
 cd /etc/php/7.0/apache2/

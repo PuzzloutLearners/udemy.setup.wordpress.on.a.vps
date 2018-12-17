@@ -41,7 +41,7 @@ echo "Add $username to the admin group"
 usermod -a -G adm $username
 
 echo "Check nano is installed to the latest version"
-apt-get install nano
+apt-get -qq install nano
 
 # Under "User privilege specification", add the following line
 # puzzlout  ALL=(ALL:ALL) ALL

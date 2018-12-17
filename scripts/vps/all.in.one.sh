@@ -217,7 +217,7 @@ sudo apt-get -qq install mailutils
 sudo apt-get -qq install htop
 
 # Install WP-CLI
-sudo apt-get --qq install curl
+sudo apt-get -qq install curl
 cd 
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar 
 chmod +x wp-cli.phar 
