@@ -13,6 +13,8 @@ cd .ssh/
 touch authorized_keys
 
 # Copy the content of the public key file into authorized_keys 
+read -n1 -rsp $'Copy the id_rsa.pub file to the VPS before continuing. Press any to continue when it is done...\n'
+
 cat id_rsa.pub >> authorized_keys
 
 # Remove the public key file
@@ -35,8 +37,10 @@ sudo chattr +i .ssh
 # sudo apt-get install e2fsprogs
 
 # Let's now configure the server to accept only SSH key pairs to login
-cd /etc/ssh/
-sudo nano sshd_config
+cd
+sudo sed -i -e 's:#AuthorizedKeysFile:AuthorizedKeysFile:g' /etc/ssh/sshd_config
+sudo sed -i -e 's:PasswordAuthentication yes:PasswordAuthentication no:g' /etc/ssh/sshd_config
+sudo nano /etc/ssh/sshd_config
 
 # Uncomment the line "#AuthorizedKeysFile     %h/.ssh/authorized_keys"
 # Under "Change to no to disable tunnelled clear text passwords", set no to "PasswordAuthentication"
@@ -44,4 +48,5 @@ sudo nano sshd_config
 # Finally restart ssh
 sudo service ssh restart
 
+echo "Log in to the vps. You should be asked the passphrase of the public key."
 exit

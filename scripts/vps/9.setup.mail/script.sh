@@ -1,6 +1,6 @@
 #!/bin/bash
 
+echo "Choose option > No configuration"
 sudo apt-get -qq install mailutils
 
-# Choose option > No configuration
-
+cd

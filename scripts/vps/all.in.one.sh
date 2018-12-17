@@ -1,6 +1,8 @@
 clear
-sudo apt-get -qq update && apt-get -qq upgrade && apt-get -qq dist-upgrade
-username="puzzlout"
+git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps
+
+#sudo apt-get -qq update && apt-get -qq upgrade && apt-get -qq dist-upgrade
+#username="puzzlout"
 #pass=""
 #shift 2
 #fname="$*"
@@ -78,6 +80,7 @@ sudo cp udemy.setup.wordpress.on.a.vps/scripts/vps/4.setup.firewall/assets/firew
 #sudo nano /etc/network/if-pre-up.d/firewall
 # Copy the content of the asset file "firewall-reboot.txt" into the file "firewall"
 sudo chmod +x /etc/network/if-pre-up.d/firewall
+sudo reboot
 
 exit
 

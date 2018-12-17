@@ -1,13 +1,22 @@
-# Root Login to Mysql
-root_mysql_user="puzzlout"
+#!/bin/bash
+if [[ $1 == "" ]]
+	then
+		printf "The unix user is required.\n"
+		exit 1;
+fi
+if [[ $2 == "" ]]
+	then
+		printf "Please provide a project value. Used to create the database and the admin user.\n"
+		exit 1;
+fi
 
-# Constants
-max_random_str_size_generic=6
-max_random_str_size_pwd=16
-project="udemy"
+username=$1
+project=$2
+# Root Login to Mysql
+root_mysql_user=$username
+
 projectemail="puzzlout@gmail.com"
-projecturl="http://udemy.puzzlout.com"
-projecttitle="Project 1"
+projecttitle="Project $project"
 
 # Variables
 dbrandompwd=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_pwd};echo;)
@@ -31,15 +40,3 @@ echo $dbuserpwd
 echo $wpadmuser
 echo $wpadmuserpwd
 echo $wptableprefix
-
-mkdir wp.db.prepare
-cd wp.db.prepare
-templatesqlfile="db.create.template.sql"
-projectsqlfile="db.create.$project.sql"
-cp ../udemy.setup.wordpress.on.a.vps/scripts/wp/1.cli/assets/$templatesqlfile $projectsqlfile
-
-sed -i -e 's:dbname:'$dbname':g' $projectsqlfile
-sed -i -e 's:dbusername:'$dbuser':g' $projectsqlfile
-sed -i -e 's:dbuserpwd:'$dbuserpwd':g' $projectsqlfile
-
-mysql -u $root_mysql_user -p < $projectsqlfile
