@@ -15,7 +15,7 @@ project=$2
 # Root Login to Mysql
 root_mysql_user=$username
 
-projectemail="puzzlout@gmail.com"
+projectemail=$defaultemail
 projecttitle="Project $project"
 
 # Variables
