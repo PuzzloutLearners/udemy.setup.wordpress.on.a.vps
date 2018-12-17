@@ -30,8 +30,10 @@ adduser $username
 echo "Setup environnement of new admin user..."
 su $username
 cd
+# Create a .ssh dir to enable better security with SSH key pair
 mkdir .ssh
-git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps $vpsinstallerdir
+
+git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps vpsinstaller
 ls -l
 exit 
 echo "Environnement of new admin user ready."

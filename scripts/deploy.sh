@@ -9,13 +9,15 @@ git config --global user.email puzzlout@gmail.com
 git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps $repodir
 
 bash $repodir/scripts/vps/1.check.updates/script.sh
-bash $repodir/scripts/vps/2.add.new.admin.user/script.sh $username $repodir
+
+username="puzzlout"
+bash $repodir/scripts/vps/2.add.new.admin.user/script.sh $username
 
 # Login as $username
-repodir="vpsinstaller"
 bash $repodir/scripts/vps/3.secure.ssh.dir/script.sh
 
 # Login as $username using the SSH key
+repodir="vpsinstaller"
 bash $repodir/scripts/vps/4.setup.firewall/1.install.sh $repodir
 
 # After reboot

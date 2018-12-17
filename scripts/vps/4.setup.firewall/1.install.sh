@@ -6,8 +6,6 @@ if [[ $1 == "" ]]
 		exit 1;
 fi
 vpsinstaller=$1
-sudo iptables -L
-# No rules are active.
 
 sudo cp $vpsinstaller/scripts/vps/4.setup.firewall/assets/firewall-rules.txt /etc/iptables.firewall.rules
 # Copy the content of the asset file "firewall-rules.txt" into "iptables.firewall.rules"

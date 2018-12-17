@@ -3,9 +3,6 @@
 # Browse to the home dir of the user
 cd 
 
-# Create a .ssh dir to enable better security with SSH key pair
-mkdir .ssh
-
 # Browse to .ssh dir
 cd .ssh/
 
@@ -39,7 +36,7 @@ sudo chattr +i .ssh
 # Let's now configure the server to accept only SSH key pairs to login
 cd
 sudo sed -i -e 's:#AuthorizedKeysFile:AuthorizedKeysFile:g' /etc/ssh/sshd_config
-sudo sed -i -e 's:PasswordAuthentication yes:PasswordAuthentication no:g' /etc/ssh/sshd_config
+sudo sed -i -e 's:#PasswordAuthentication no:PasswordAuthentication no:g' /etc/ssh/sshd_config
 sudo nano /etc/ssh/sshd_config
 
 # Uncomment the line "#AuthorizedKeysFile     %h/.ssh/authorized_keys"
