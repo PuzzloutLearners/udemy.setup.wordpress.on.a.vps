@@ -26,5 +26,5 @@ sudo sed -i -e 's:'$templatedomain':'$domain':g' $domain.conf
 sudo a2ensite $domain.conf
 sudo service apache2 reload
 cd 
-sudo cp vpsinstallerdir/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/$domain/public_html/index.html
+sudo cp $vpsinstallerdir/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/$domain/public_html/index.html
 sudo sed -i -e 's:Coming soon:'$domain' website is coming soon:g' /var/www/$domain/public_html/index.html

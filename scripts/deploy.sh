@@ -53,11 +53,11 @@ bash $repodir/scripts/vps/10.setup.monitoring/install.manual.tool.sh
 bash $repodir/scripts/web/create.template.conf.sh
 
 domain="asteol.puzzlout.com"
-bash $repodir/scripts/web/create.new.site.conf.sh $domain
+bash $repodir/scripts/web/create.new.site.conf.sh $domain $repodir
 domain="u2.puzzlout.com"
-bash $repodir/scripts/web/create.new.site.conf.sh $domain
+bash $repodir/scripts/web/create.new.site.conf.sh $domain $repodir
 domain="u3.puzzlout.com"
-bash $repodir/scripts/web/create.new.site.conf.sh $domain
+bash $repodir/scripts/web/create.new.site.conf.sh $domain $repodir
 
 bash $repodir/scripts/wp/1.cli/1.install.sh
 
