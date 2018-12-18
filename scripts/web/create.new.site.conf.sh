@@ -7,10 +7,16 @@ if [[ $1 == "" ]]
 		printf "The domain to install is required.\n"
 		exit 1;
 fi
+if [[ $2 == "" ]]
+	then
+		printf "Please provide a value to clone the git repo containing the installer.\n"
+		exit 1;
+fi
+domain=$1
+vpsinstallerdir=$2
 
 cd 
 templatedomain=template.com
-domain=$1
 cd /var/www
 sudo mkdir -p $domain/public_html 
 cd /etc/apache2/sites-available/
@@ -20,5 +26,5 @@ sudo sed -i -e 's:'$templatedomain':'$domain':g' $domain.conf
 sudo a2ensite $domain.conf
 sudo service apache2 reload
 cd 
-sudo cp udemy.setup.wordpress.on.a.vps/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/$domain/public_html/index.html
+sudo cp vpsinstallerdir/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/$domain/public_html/index.html
 sudo sed -i -e 's:Coming soon:'$domain' website is coming soon:g' /var/www/$domain/public_html/index.html

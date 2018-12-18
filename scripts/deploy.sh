@@ -52,7 +52,7 @@ bash $repodir/scripts/vps/10.setup.monitoring/install.manual.tool.sh
 
 bash $repodir/scripts/web/create.template.conf.sh
 
-domain="u1.puzzlout.com"
+domain="asteol.puzzlout.com"
 bash $repodir/scripts/web/create.new.site.conf.sh $domain
 domain="u2.puzzlout.com"
 bash $repodir/scripts/web/create.new.site.conf.sh $domain
