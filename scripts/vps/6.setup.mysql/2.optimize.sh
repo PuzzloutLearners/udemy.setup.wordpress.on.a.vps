@@ -50,10 +50,10 @@ mkdir mysql_tuner
 cd mysql_tuner
 wget http://mysqltuner.pl/ -O mysqltuner.pl
 chmod +x mysqltuner.pl
-./mysqltuner
+./mysqltuner.pl
 
-cd /etc/mysql/mysql.conf.d/
-sudo nano mysqld.cnf
+#cd /etc/mysql/mysql.conf.d/
+#sudo nano mysqld.cnf
 # Add, after "Query Cache Configuration" section, a new section
 
 # My customizations

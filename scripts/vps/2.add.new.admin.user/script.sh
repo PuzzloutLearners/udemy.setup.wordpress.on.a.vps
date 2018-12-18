@@ -12,13 +12,7 @@ if [[ $1 == "" ]]
 		printf "The unix user is required.\n"
 		exit 1;
 fi
-if [[ $2 == "" ]]
-	then
-		printf "Please provide a value to clone the git repo containing the installer.\n"
-		exit 1;
-fi
 username=$1
-vpsinstallerdir=$2
 ###############################################################################
 ##
 ## First login
@@ -26,18 +20,6 @@ vpsinstallerdir=$2
 ###############################################################################
 echo "Add a new user"
 adduser $username
-
-echo "Setup environnement of new admin user..."
-su $username
-cd
-# Create a .ssh dir to enable better security with SSH key pair
-mkdir .ssh
-
-git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps vpsinstaller
-ls -l
-exit 
-echo "Environnement of new admin user ready."
-
 
 echo "Add $username to the admin group"
 usermod -a -G adm $username

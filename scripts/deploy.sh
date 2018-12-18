@@ -11,9 +11,20 @@ git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps $re
 bash $repodir/scripts/vps/1.check.updates/script.sh
 
 username="puzzlout"
-bash $repodir/scripts/vps/2.add.new.admin.user/script.sh $username
+bash $repodir/scripts/vps/2.add.new.admin.user/script.sh $username $repodir
+echo "Setup environnement of new admin user..."
+su $username
+cd
+# Create a .ssh dir to enable better security with SSH key pair
+mkdir .ssh
+
+git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps vpsinstaller
+ls -l
+exit 
+echo "Environnement of new admin user ready."
 
 # Login as $username
+repodir="vpsinstaller"
 bash $repodir/scripts/vps/3.secure.ssh.dir/script.sh
 
 # Login as $username using the SSH key
@@ -34,7 +45,7 @@ bash $repodir/scripts/vps/6.setup.mysql/2.optimize.sh $username $repodir
 bash $repodir/scripts/vps/7.setup.php/1.install.sh $username $repodir
 bash $repodir/scripts/vps/7.setup.php/2.configure.sh $username $repodir
 
-bash $repodir/scripts/vps/8.setup.fail2ban/1.install.sh $username $repodir
+bash $repodir/scripts/vps/8.setup.fail2ban/install.sh $username $repodir
 
 bash $repodir/scripts/vps/9.setup.mail/script.sh
 bash $repodir/scripts/vps/10.setup.monitoring/install.manual.tool.sh
