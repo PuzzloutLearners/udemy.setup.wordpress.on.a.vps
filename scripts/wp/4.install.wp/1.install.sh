@@ -15,3 +15,22 @@ sudo find /var/www -type f -exec chmod 664 {} \;
 mv wp-config.php ../
 rm wp-config-sample.php
 cd ..
+
+cat /home/$username/$repodir/scripts/wp/4.inst
+all.wp/assets/wp-config.file.modifications.txt >> wp-config.php
+sudo chmod 440 wp-config.php
+
+cd public_html
+
+rm index.html
+touch .htaccess
+sudo chown $username:www-data .htaccess
+echo "Allow the user and webserver to edit the .htaccess"
+sudo chmod 660 .htaccess
+
+echo "From the browser, do the following:"
+echo "  - Edit the permalink settings to: Post name"
+echo "  - Trash the sample page"
+echo "  - Trash the sample post"
+
+cd
