@@ -16,7 +16,7 @@ project=$2
 root_mysql_user=$username
 
 projectemail=$defaultemail
-projecttitle="Project $project"
+projecttitle="Project_$project"
 
 # Variables
 dbrandompwd=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_pwd};echo;)
@@ -32,7 +32,7 @@ dbuserpwd=$dbrandompwd
 wpadmuser="$project"_"$wpuserprefix"
 wpadmuserpwd=$wpuserrandompwd
 wpadmuseremail=$projectemail
-wptableprefix="$project"_"$dbdetailprefix"_
+wptableprefix="$dbdetailprefix"_
 
 echo $dbname
 echo $dbuser

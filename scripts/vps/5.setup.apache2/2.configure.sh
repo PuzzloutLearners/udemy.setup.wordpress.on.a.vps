@@ -36,5 +36,9 @@ sudo a2enmod rewrite
 
 # Restart Apache
 sudo service apache2 restart
+
+echo "Give $username ownership to /var/www"
+sudo chown -R $username /var/www/
+
 cd
 

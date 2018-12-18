@@ -1,0 +1,3 @@
+/** Allow Direct Updating */
+Define('FS_METHOD', 'direct');
+

@@ -61,11 +61,13 @@ bash $repodir/scripts/web/create.new.site.conf.sh $domain $repodir
 
 bash $repodir/scripts/wp/1.cli/1.install.sh
 
+repodir="vpsinstaller"
+# Bug: This doesn't set the constants...
+#bash $repodir/scripts/wp/2.create.db/1.set.constants.sh
 
-bash $repodir/scripts/wp/2.create.db/1.set.constants.sh
-
-projecturl="http://u1.puzzlout.com"
-bash $repodir/scripts/wp/2.create.db/2.set.variables.sh $username udemy1
+project_id="asteol"
+projecturl="http://$project_id.puzzlout.com"
+bash $repodir/scripts/wp/2.create.db/2.set.variables.sh $username $project_id
 bash $repodir/scripts/wp/2.create.db/3.run.sql.sh $repodir
 
 projecturl="http://u2.puzzlout.com"
