@@ -27,10 +27,40 @@ touch .htaccess
 sudo chown $username:www-data .htaccess
 echo "Allow the user and webserver to edit the .htaccess"
 sudo chmod 660 .htaccess
+# 660 is necessary for installing/setting up the plugins at first installation
+# 440 is used to prevent modification to .htaccess
 
-echo "From the browser, do the following:"
 echo "  - Edit the permalink settings to: Post name"
 echo "  - Trash the sample page"
 echo "  - Trash the sample post"
+
+#Remove the text files containing the version number of plugins and themes
+cd ..
+sudo find -type f -name "*.txt" -delete
+echo "From the browser, do the following:"
+
+# Move back public_html folder to be able to run wp-cli commands
+cd public_html
+
+# Themes commands
+#
+# https://developer.wordpress.org/cli/commands/theme/
+wp scaffold child-theme asteol --parent_theme=twentynineteen --theme_name='Asteol Theme' --author="Puzzlout" --author_uri=http://puzzlout.com --theme_uri=http://puzzlout.com
+
+
+# Plugins commands
+#
+# https://developer.wordpress.org/cli/commands/plugin/
+
+wp plugin delete hello
+wp plugin install wp-super-cache
+wp plugin install better-wp-security
+wp plugin install all-in-one-seo-pack
+wp plugin install social-media-feather
+wp plugin install add-from-server
+wp plugin install multiple-sidebars
+wp plugin install jetpack
+wp plugin activate --all
+
 
 cd

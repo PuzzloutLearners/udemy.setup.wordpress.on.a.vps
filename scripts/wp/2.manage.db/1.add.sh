@@ -1,4 +1,20 @@
 #!/bin/sh
+# Input parameters
+if [[ $1 == "" ]]
+	then
+		printf "The unix user is required.\n"
+		exit 1;
+fi
+if [[ $2 == "" ]]
+	then
+		printf "Please provide a project value. Used to create the database and the admin user.\n"
+		exit 1;
+fi
+if [[ $3 == "" ]]
+	then
+		printf "Please provide a value to clone the git repo containing the installer.\n"
+		exit 1;
+fi
 
 # Constants
 max_random_str_size_generic=6
@@ -11,19 +27,9 @@ echo $max_random_str_size_pwd
 echo $defaultemail
 
 # Variables
-if [[ $1 == "" ]]
-	then
-		printf "The unix user is required.\n"
-		exit 1;
-fi
-if [[ $2 == "" ]]
-	then
-		printf "Please provide a project value. Used to create the database and the admin user.\n"
-		exit 1;
-fi
 
-username=$1
-project=$2
+username=puzzlout
+project=asteol
 # Root Login to Mysql
 root_mysql_user=$username
 
@@ -54,13 +60,7 @@ echo $wpadmuserpwd
 echo $wptableprefix
 
 # Prepare the SQL file
-
-if [[ $3 == "" ]]
-	then
-		printf "Please provide a value to clone the git repo containing the installer.\n"
-		exit 1;
-fi
-vpsinstallerdir=$3
+vpsinstallerdir=vpsinstaller
 
 wpdbpreparedir="wp.db.prepare"
 mkdir $wpdbpreparedir
@@ -69,7 +69,7 @@ cd
 templatesqlfile="db.create.template.sql"
 projectsqlfile="db.create.$project.sql"
 
-cp $vpsinstallerdir/scripts/wp/2.create.db/assets/$templatesqlfile $wpdbpreparedir/$projectsqlfile
+cp /home/$username/$vpsinstallerdir/scripts/wp/2.manage.db/assets/$templatesqlfile $wpdbpreparedir/$projectsqlfile
 
 cd $wpdbpreparedir
 

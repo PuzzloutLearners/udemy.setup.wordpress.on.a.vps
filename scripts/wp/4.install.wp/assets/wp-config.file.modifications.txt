@@ -2,3 +2,8 @@
 /** Allow Direct Updating */
 Define('FS_METHOD', 'direct');
 
+/** Disable Plugin and Theme editing from the WP Dashboard */
+Define('DISALLOW_FILE_EDIT', 'true');
+
+/** Allow Automatic Core Updates */
+Define('WP_AUTO_UPDATE_CORE', 'true');
