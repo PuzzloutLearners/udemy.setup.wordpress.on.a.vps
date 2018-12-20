@@ -1,5 +1,6 @@
 #!/bin/bash
 
+repodir="vpsinstaller"
 domain="asteol.puzzlout.com"
 username="puzzlout"
 cd /var/www/$domain/public_html
@@ -16,8 +17,7 @@ mv wp-config.php ../
 rm wp-config-sample.php
 cd ..
 
-cat /home/$username/$repodir/scripts/wp/4.inst
-all.wp/assets/wp-config.file.modifications.txt >> wp-config.php
+cat /home/$username/$repodir/scripts/wp/4.install.wp/assets/wp-config.file.modifications.txt >> wp-config.php
 sudo chmod 440 wp-config.php
 
 cd public_html
