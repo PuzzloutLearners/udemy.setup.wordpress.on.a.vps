@@ -55,11 +55,11 @@ wp scaffold child-theme asteol --parent_theme=twentynineteen --theme_name='Asteo
 wp plugin delete hello
 wp plugin install wp-super-cache
 wp plugin install better-wp-security
-wp plugin install all-in-one-seo-pack
-wp plugin install social-media-feather
-wp plugin install add-from-server
-wp plugin install multiple-sidebars
-wp plugin install jetpack
+#wp plugin install all-in-one-seo-pack
+#wp plugin install social-media-feather
+#wp plugin install add-from-server
+#wp plugin install multiple-sidebars
+#wp plugin install jetpack
 wp plugin activate --all
 
 
