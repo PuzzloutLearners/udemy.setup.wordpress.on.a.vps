@@ -1,13 +1,34 @@
-#!/bin/bash
+#!/bin/sh
+# Input parameters
+if [[ $1 == "" ]]
+	then
+		printf "The unix user is required.\n"
+		exit 1;
+fi
+if [[ $2 == "" ]]
+	then
+		printf "Please provide a project value. Used to create the database and the admin user.\n"
+		exit 1;
+fi
+if [[ $3 == "" ]]
+	then
+		printf "Please provide a value to clone the git repo containing the installer.\n"
+		exit 1;
+fi
 
-repodir="vpsinstaller"
-domain="asteol.puzzlout.com"
-username="puzzlout"
+# Variables
+username=$1
+project=$2
+vpsinstallerdir=$3
+domain="$project.puzzlout.com"
+websiteurl="http://$domain"
+
+
 cd /var/www/$domain/public_html
 
 wp core download
 wp core config --dbname=$dbname --dbuser=$dbuser --dbpass=$dbuserpwd --dbprefix=$wptableprefix
-wp core install --url=http://asteol.puzzlout.com --title=$projecttitle --admin_user=$wpadmuser --admin_password=$wpadmuserpwd --admin_email=$projectemail
+wp core install --url=$websiteurl --title=$projecttitle --admin_user=$wpadmuser --admin_password=$wpadmuserpwd --admin_email=$projectemail
 
 sudo chown -R $username:www-data /var/www/$domain
 sudo find /var/www -type d -exec chmod 775 {} \;
@@ -17,7 +38,7 @@ mv wp-config.php ../
 rm wp-config-sample.php
 cd ..
 
-cat /home/$username/$repodir/scripts/wp/4.install.wp/assets/wp-config.file.modifications.txt >> wp-config.php
+cat /home/$username/$vpsinstallerdir/scripts/wp/4.install.wp/assets/wp-config.file.modifications.txt >> wp-config.php
 sudo chmod 440 wp-config.php
 
 cd public_html
@@ -45,8 +66,7 @@ cd public_html
 # Themes commands
 #
 # https://developer.wordpress.org/cli/commands/theme/
-wp scaffold child-theme asteol --parent_theme=twentynineteen --theme_name='Asteol Theme' --author="Puzzlout" --author_uri=http://puzzlout.com --theme_uri=http://puzzlout.com
-
+#wp scaffold child-theme asteol --parent_theme=twentynineteen --theme_name='Asteol Theme' --author="Puzzlout" --author_uri=http://puzzlout.com --theme_uri=http://puzzlout.com
 
 # Plugins commands
 #

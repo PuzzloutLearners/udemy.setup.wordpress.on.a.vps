@@ -15,6 +15,9 @@ if [[ $3 == "" ]]
 		printf "Please provide a value to clone the git repo containing the installer.\n"
 		exit 1;
 fi
+username=$1
+project=$2
+vpsinstallerdir=$3
 
 # Constants
 max_random_str_size_generic=6
@@ -28,8 +31,8 @@ echo $defaultemail
 
 # Variables
 
-username=puzzlout
-project=asteol
+#username=puzzlout
+#project=asteol
 # Root Login to Mysql
 root_mysql_user=$username
 
@@ -60,11 +63,11 @@ echo $wpadmuserpwd
 echo $wptableprefix
 
 # Prepare the SQL file
-vpsinstallerdir=vpsinstaller
+#vpsinstallerdir=vpsinstaller
 
+cd
 wpdbpreparedir="wp.db.prepare"
 mkdir $wpdbpreparedir
-cd
 
 templatesqlfile="db.create.template.sql"
 projectsqlfile="db.create.$project.sql"
@@ -78,7 +81,6 @@ sed -i -e 's:dbusername:'$dbuser':g' $projectsqlfile
 sed -i -e 's:dbuserpwd:'$dbuserpwd':g' $projectsqlfile
 
 # Run the SQL file
-
 mysql -u $root_mysql_user -p < $projectsqlfile
 
 cd
