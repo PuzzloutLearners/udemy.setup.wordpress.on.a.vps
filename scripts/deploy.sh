@@ -67,5 +67,5 @@ repodir="vpsinstaller"
 
 project_id="asteol"
 projecturl="http://$project_id.puzzlout.com"
-bash $repodir/scripts/wp/manage.db/add.sh $username $project_id $repodir
-bash $repodir/scripts/wp/install.wp/add.sh $username $project_id $repodir
+bash $repodir/scripts/wp/add.wp.db.sh $username $project_id $repodir
+bash $repodir/scripts/wp/install.wp.site.sh $username $project_id $repodir

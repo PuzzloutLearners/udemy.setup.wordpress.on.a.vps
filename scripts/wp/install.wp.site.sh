@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Input parameters
 if [[ $1 == "" ]]
 	then
@@ -38,7 +38,7 @@ mv wp-config.php ../
 rm wp-config-sample.php
 cd ..
 
-cat /home/$username/$vpsinstallerdir/scripts/wp/4.install.wp/assets/wp-config.file.modifications.txt >> wp-config.php
+cat /home/$username/$vpsinstallerdir/scripts/wp/assets/install.wp/wp-config.file.modifications.txt >> wp-config.php
 sudo chmod 440 wp-config.php
 
 cd public_html
