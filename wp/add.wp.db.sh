@@ -15,6 +15,13 @@ if [[ $3 == "" ]]
 		printf "Please provide a value to clone the git repo containing the installer.\n"
 		exit 1;
 fi
+Mode="debug"
+if [[ $4 == "" ]]
+	then
+		printf "Running the script in Production mode.\n"
+		Mode="prod"
+fi
+
 RootMysqlUser=$1
 ProjectId=$2
 RepositoryDir=$3
@@ -36,30 +43,33 @@ echo $DatabaseName
 echo $DatabaseUsername
 echo $DatabaseRandomPassword
 
+
 # Prepare the SQL file
 #RepositoryDir=vpsinstaller
-cd
-ProjectRepository="ProjectRepository.Files"
-git clone https://gitlab.com/asteol-project/Project.Files $ProjectRepository
-mkdir $ProjectRepository/$ProjectId
+if [[ $Mode == "prod" ]]
+	then
+		cd
+		ProjectRepository="ProjectRepository.Files"
+		git clone https://gitlab.com/asteol-project/Project.Files $ProjectRepository
+		mkdir $ProjectRepository/$ProjectId
 
-TemplateDbCreationFilename="db.create.template.sql"
-ProjectWordPressDbCreationFilename="db.create.$ProjectId.sql"
+		TemplateDbCreationFilename="db.create.template.sql"
+		ProjectWordPressDbCreationFilename="db.create.$ProjectId.sql"
 
-cd #to make you are in Home dir of the connected UNIX user
-cp $RepositoryDir/scripts/wp/assets/manage.db/$TemplateDbCreationFilename $ProjectRepository/$ProjectId/$ProjectWordPressDbCreationFilename
+		cd #to make you are in Home dir of the connected UNIX user
+		cp $RepositoryDir/wp/assets/manage.db/$TemplateDbCreationFilename $ProjectRepository/$ProjectId/$ProjectWordPressDbCreationFilename
 
-cd $ProjectRepository/$ProjectId
+		cd $ProjectRepository/$ProjectId
 
-sed -i -e 's:dbname:'$DatabaseName':g' $ProjectWordPressDbCreationFilename
-sed -i -e 's:dbusername:'$DatabaseUsername':g' $ProjectWordPressDbCreationFilename
-sed -i -e 's:dbuserpwd:'$DatabaseRandomPassword':g' $ProjectWordPressDbCreationFilename
+		sed -i -e 's:dbname:'$DatabaseName':g' $ProjectWordPressDbCreationFilename
+		sed -i -e 's:dbusername:'$DatabaseUsername':g' $ProjectWordPressDbCreationFilename
+		sed -i -e 's:dbuserpwd:'$DatabaseRandomPassword':g' $ProjectWordPressDbCreationFilename
 
-# Run the SQL file
-mysql -u $RootMysqlUser -p < $ProjectWordPressDbCreationFilename
+		# Run the SQL file
+		mysql -u $RootMysqlUser -p < $ProjectWordPressDbCreationFilename
 
-git add -A
-git commit -m "feat: add the sql file for $ProjectId"
-git push
-
+		git add -A
+		git commit -m "feat: add the sql file for $ProjectId"
+		git push
+fi
 cd
