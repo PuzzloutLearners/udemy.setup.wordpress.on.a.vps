@@ -18,7 +18,7 @@ sudo apt-get -qq upgrade
 sudo apt-get -qq dist-upgrade
 
 username="puzzlout"
-bash $repodir/scripts/vps/2.add.new.admin.user/script.sh $username $repodir
+bash $repodir/vps/2.add.new.admin.user/script.sh $username $repodir
 echo "Setup environnement of new admin user..."
 su $username
 cd
