@@ -38,5 +38,5 @@ sudo sed -i -e 's:Coming soon:'$domain' website is coming soon:g' /var/www/$doma
 echo "Setup SSL over $domain..."
 /opt/letsencrypt/letsencrypt-auto --apache --renew-by-default -d $domain
 echo "Check the validity dates of SSL certificate of $domain"
-openssl x509 -noout -dates -in /etc/letsencrypt/live/$domain/cert.pem
+sudo openssl x509 -noout -dates -in /etc/letsencrypt/live/$domain1/cert.pem
 
