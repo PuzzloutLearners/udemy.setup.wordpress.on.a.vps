@@ -7,7 +7,7 @@ if [[ $1 == "" ]]
 fi
 if [[ $2 == "" ]]
 	then
-		printf "Please provide a project value. Used to create the database and the admin user.\n"
+		printf "Please provide a ProjectId value. Used to create the database and the admin user.\n"
 		exit 1;
 fi
 if [[ $3 == "" ]]
@@ -15,72 +15,51 @@ if [[ $3 == "" ]]
 		printf "Please provide a value to clone the git repo containing the installer.\n"
 		exit 1;
 fi
-username=$1
-project=$2
-vpsinstallerdir=$3
+RootMysqlUser=$1
+ProjectId=$2
+RepositoryDir=$3
 
 # Constants
-max_random_str_size_generic=6
-max_random_str_size_pwd=16
+MaxRandomStringSizeCommonUsage=6
+MaxRandomStringSizePasswordUsage=16
 
-defaultemail="puzzlout@gmail.com"
-
-echo $max_random_str_size_generic
-echo $max_random_str_size_pwd
-echo $defaultemail
+echo $MaxRandomStringSizeCommonUsage
+echo $MaxRandomStringSizePasswordUsage
 
 # Variables
+DatabaseRandomPassword=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$MaxRandomStringSizePasswordUsage};echo;)
+DatabaseDetailPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$MaxRandomStringSizeCommonUsage};echo;)
 
-#username=puzzlout
-#project=asteol
-# Root Login to Mysql
-root_mysql_user=$username
-
-projectemail=$defaultemail
-projecttitle="Project_$project"
-
-# Variables
-dbrandompwd=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_pwd};echo;)
-dbdetailprefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_generic};echo;)
-
-wpuserrandompwd=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_pwd};echo;)
-wpuserprefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$max_random_str_size_generic};echo;)
-
-dbname="$project"_"$dbdetailprefix"
-dbuser="$project"_u_"$dbdetailprefix"
-dbuserpwd=$dbrandompwd
-
-wpadmuser="$project"_"$wpuserprefix"
-wpadmuserpwd=$wpuserrandompwd
-wpadmuseremail=$projectemail
-wptableprefix="$dbdetailprefix"_
-
-echo $dbname
-echo $dbuser
-echo $dbuserpwd
-echo $wpadmuser
-echo $wpadmuserpwd
-echo $wptableprefix
+DatabaseName="$ProjectId"_"$DatabaseDetailPrefix"
+DatabaseUsername="$ProjectId"_u_"$DatabaseDetailPrefix"
+echo $DatabaseName
+echo $DatabaseUsername
+echo $DatabaseRandomPassword
 
 # Prepare the SQL file
-#vpsinstallerdir=vpsinstaller
-
+#RepositoryDir=vpsinstaller
 cd
-wpdbpreparedir="wp.db.prepare"
-mkdir $wpdbpreparedir
+ProjectRepository="ProjectRepository.Files"
+git clone https://gitlab.com/asteol-project/Project.Files $ProjectRepository
+mkdir $ProjectRepository/$ProjectId
 
-templatesqlfile="db.create.template.sql"
-projectsqlfile="db.create.$project.sql"
+TemplateDbCreationFilename="db.create.template.sql"
+ProjectWordPressDbCreationFilename="db.create.$ProjectId.sql"
 
-cp /home/$username/$vpsinstallerdir/scripts/wp/assets/manage.db/$templatesqlfile $wpdbpreparedir/$projectsqlfile
+cd #to make you are in Home dir of the connected UNIX user
+cp $RepositoryDir/scripts/wp/assets/manage.db/$TemplateDbCreationFilename $ProjectRepository/$ProjectId/$ProjectWordPressDbCreationFilename
 
-cd $wpdbpreparedir
+cd $ProjectRepository/$ProjectId
 
-sed -i -e 's:dbname:'$dbname':g' $projectsqlfile
-sed -i -e 's:dbusername:'$dbuser':g' $projectsqlfile
-sed -i -e 's:dbuserpwd:'$dbuserpwd':g' $projectsqlfile
+sed -i -e 's:dbname:'$DatabaseName':g' $ProjectWordPressDbCreationFilename
+sed -i -e 's:dbusername:'$DatabaseUsername':g' $ProjectWordPressDbCreationFilename
+sed -i -e 's:dbuserpwd:'$DatabaseRandomPassword':g' $ProjectWordPressDbCreationFilename
 
 # Run the SQL file
-mysql -u $root_mysql_user -p < $projectsqlfile
+mysql -u $RootMysqlUser -p < $ProjectWordPressDbCreationFilename
+
+git add -A
+git commit -m "feat: add the sql file for $ProjectId"
+git push
 
 cd
