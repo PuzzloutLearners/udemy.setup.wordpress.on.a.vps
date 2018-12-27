@@ -20,6 +20,8 @@ bash $repodir/vps/8.setup.fail2ban/install.sh $username $repodir
 bash $repodir/vps/9.setup.mail/script.sh
 bash $repodir/vps/10.setup.monitoring/install.manual.tool.sh
 
+bash $repodir/vps/11.setup.letsencrypt/script.sh
+
 bash $repodir/web/create.template.conf.sh
 
 echo "The vps is setup!"

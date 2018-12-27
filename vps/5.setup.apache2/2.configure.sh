@@ -43,5 +43,8 @@ sudo service apache2 restart
 echo "Give $username ownership to /var/www"
 sudo chown -R $username /var/www/
 
+echo "add www-data to $username group"
+sudo usermod -a -G www-data $username
+
 cd
 

@@ -32,10 +32,11 @@ sudo sed -i -e 's:'$templatedomain':'$domain':g' $domain.conf
 sudo a2ensite $domain.conf
 sudo service apache2 reload
 cd 
-sudo cp $vpsinstallerdir/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/$domain/public_html/index.html
+sudo cp $vpsinstallerdir/vps/5.setup.apache2/assets/new.index.html /var/www/$domain/public_html/index.html
 sudo sed -i -e 's:Coming soon:'$domain' website is coming soon:g' /var/www/$domain/public_html/index.html
 
-cd /var/www/$domain/public_html
-echo "add www-data to $username group"
-sudo usermod -a -G www-data $username
+echo "Setup SSL over $domain..."
+/opt/letsencrypt/letsencrypt-auto --apache --renew-by-default -d $domain
+echo "Check the validity dates of SSL certificate of $domain"
+openssl x509 -noout -dates -in /etc/letsencrypt/live/$domain/cert.pem"
 
