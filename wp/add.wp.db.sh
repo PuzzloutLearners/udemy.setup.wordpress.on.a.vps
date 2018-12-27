@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Input parameters
 if [[ -z $1 ]]
 	then
@@ -23,6 +23,10 @@ if [[ "$4" == "$ModeProd" ]]
 	then
 		printf "Running the script in Production mode.\n"
 		Mode=$ModeProd
+fi
+if [[ "$4" == "$ModeProd" ]]
+	then
+		printf "Running the script in Debug mode.\n"
 fi
 
 RootMysqlUser=$1
@@ -49,7 +53,7 @@ echo $DatabaseRandomPassword
 
 # Prepare the SQL file
 #RepositoryDir=vpsinstaller
-if [ $Mode == "prod" ]
+if [ $Mode == "$ModeProd" ]
 	then
 		cd
 		ProjectRepository="ProjectRepository.Files"
