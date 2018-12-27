@@ -47,6 +47,6 @@ echo "Restart ssh service"
 service ssh restart
 
 echo "Disconnect from Root. Try to connect with $username"
-exit
+logout
 
 # Try to connect from puzzlout
