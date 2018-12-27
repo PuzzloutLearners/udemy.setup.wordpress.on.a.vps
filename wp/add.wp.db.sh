@@ -1,25 +1,28 @@
 #!/bin/sh
 # Input parameters
-if [[ $1 == "" ]]
+if [[ -z $1 ]]
 	then
 		printf "The unix user is required.\n"
 		exit 1;
 fi
-if [[ $2 == "" ]]
+if [[ -z $2 ]]
 	then
 		printf "Please provide a ProjectId value. Used to create the database and the admin user.\n"
 		exit 1;
 fi
-if [[ $3 == "" ]]
+if [[ -z $3 ]]
 	then
 		printf "Please provide a value to clone the git repo containing the installer.\n"
 		exit 1;
 fi
-Mode="debug"
-if [[ $4 == "" ]]
+ModeDebug="debug"
+ModeProd="prod"
+Mode=$ModeDebug
+#If Mode input 
+if [[ "$4" == "$ModeProd" ]]
 	then
 		printf "Running the script in Production mode.\n"
-		Mode="prod"
+		Mode=$ModeProd
 fi
 
 RootMysqlUser=$1
@@ -46,7 +49,7 @@ echo $DatabaseRandomPassword
 
 # Prepare the SQL file
 #RepositoryDir=vpsinstaller
-if [[ $Mode == "prod" ]]
+if [ $Mode == "prod" ]
 	then
 		cd
 		ProjectRepository="ProjectRepository.Files"
