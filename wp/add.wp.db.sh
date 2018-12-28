@@ -37,15 +37,19 @@ echo "Defining RepositoryDir"
 RepositoryDir=$3
 
 # Constants
-MaxRandomStringSizeCommonUsage=6
+MaxRandomStringSizeCommonUsage="-c6"
 MaxRandomStringSizePasswordUsage=16
 
 echo "MaxRandomStringSizeCommonUsage equals to $MaxRandomStringSizeCommonUsage"
 echo "MaxRandomStringSizePasswordUsage equals to $MaxRandomStringSizePasswordUsage"
 
 # Variables
-DatabaseRandomPassword=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$MaxRandomStringSizePasswordUsage};echo;)
-DatabaseDetailPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$MaxRandomStringSizeCommonUsage};echo;)
+echo "Create the Database password"
+DatabaseRandomPassword=$(openssl rand -base64 $MaxRandomStringSizePasswordUsage)
+echo "DatabaseRandomPassword is: $DatabaseRandomPassword"
+echo "Create the Database prefix"
+DatabaseDetailPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head $MaxRandomStringSizeCommonUsage)
+echo "DatabaseDetailPrefix is: $DatabaseDetailPrefix"
 
 DatabaseName="$ProjectId"_"$DatabaseDetailPrefix"
 DatabaseUsername="$ProjectId"_u_"$DatabaseDetailPrefix"
