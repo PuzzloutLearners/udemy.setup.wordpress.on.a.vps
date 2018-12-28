@@ -14,7 +14,7 @@ vpsinstallerdir=$2
 
 cd /etc/apache2/mods-available/
 sudo cp dir.conf dir.conf.bak
-sudo cp /home/$username/$vpsinstallerdir/scripts/vps/7.setup.php/assets/dir.conf dir.conf
+sudo cp /home/$username/$vpsinstallerdir/vps/7.setup.php/assets/dir.conf dir.conf
 
 sudo service apache2 restart
 

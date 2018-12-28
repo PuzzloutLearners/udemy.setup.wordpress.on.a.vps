@@ -12,7 +12,7 @@ fi
 username=$1
 vpsinstaller=$2
 # Create a new one from the file "new.index.html"
-sudo cp $vpsinstaller/scripts/vps/5.setup.apache2/assets/new.index.html /var/www/html/index.html
+sudo cp $vpsinstaller/vps/5.setup.apache2/assets/new.index.html /var/www/html/index.html
 cd /etc/apache2/conf-available/
 # Backup the security conf file 
 sudo cp security.conf security.conf.bak
@@ -29,7 +29,7 @@ sudo service apache2 restart
 cd ..
 sudo cp apache2.conf apache2.conf.bak
 # Add the content of the asset file "mpm_prefork_module.conf" at the end of the apache2.conf file
-sudo cat /home/$username/$vpsinstaller/scripts/vps/5.setup.apache2/assets/mpm_prefork_module.conf >> apache2.conf
+sudo cat /home/$username/$vpsinstaller/vps/5.setup.apache2/assets/mpm_prefork_module.conf >> apache2.conf
 # At the block "<Directory /var/www/>", modify "AllowOverride" to "All" to enable using .htaccess files
 sudo nano apache2.conf
 # Disable the auto index module (listing all the files is a security problem)

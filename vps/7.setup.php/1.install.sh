@@ -19,6 +19,6 @@ php -v
 
 cd /etc/php/7.0/apache2/
 sudo cp php.ini php.ini.bak
-sudo cp /home/$username/$vpsinstallerdir/scripts/vps/7.setup.php/assets/php.ini.optimized php.ini
+sudo cp /home/$username/$vpsinstallerdir/vps/7.setup.php/assets/php.ini.optimized php.ini
 
 cd

@@ -29,16 +29,19 @@ if [[ "$4" == "$ModeProd" ]]
 		printf "Running the script in Debug mode.\n"
 fi
 
+echo "Defining RootMysqlUser"
 RootMysqlUser=$1
+echo "Defining ProjectId"
 ProjectId=$2
+echo "Defining RepositoryDir"
 RepositoryDir=$3
 
 # Constants
 MaxRandomStringSizeCommonUsage=6
 MaxRandomStringSizePasswordUsage=16
 
-echo $MaxRandomStringSizeCommonUsage
-echo $MaxRandomStringSizePasswordUsage
+echo "MaxRandomStringSizeCommonUsage equals to $MaxRandomStringSizeCommonUsage"
+echo "MaxRandomStringSizePasswordUsage equals to $MaxRandomStringSizePasswordUsage"
 
 # Variables
 DatabaseRandomPassword=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$MaxRandomStringSizePasswordUsage};echo;)

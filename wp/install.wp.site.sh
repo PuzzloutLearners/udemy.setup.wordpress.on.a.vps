@@ -15,6 +15,16 @@ if [[ $3 == "" ]]
 		printf "Please provide a directory name of the git repo containing the installer.\n"
 		exit 1;
 fi
+DefaultEmail="puzzlout@gmail.com"
+if [[ $4 == "" ]]
+	then
+		printf "No e-mail address provided. Using $DefaultEmail instead.\n"
+		ProjectAdminEmail=$DefaultEmail
+fi
+if [[ $4 != "" ]]
+	then
+		ProjectAdminEmail=$4
+fi
 if [[ $5 == "" ]]
 	then
 		printf "Please provide a domain value where the website will be available.\n"
@@ -32,16 +42,6 @@ echo $MaxRandomStringSizePasswordUsage
 UnixUserName=$1
 ProjectId=$2
 RepositoryDir=$3
-DefaultEmail="puzzlout@gmail.com"
-if [[ $4 == "" ]]
-	then
-		printf "No e-mail address provided. Using $DefaultEmail instead.\n"
-		ProjectAdminEmail=$DefaultEmail
-fi
-if [[ $4 != "" ]]
-	then
-		ProjectAdminEmail=$4
-fi
 ProjectTitle="Project_$ProjectId"
 
 WordPressUserRandomPassword=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$MaxRandomStringSizePasswordUsage};echo;)
@@ -57,7 +57,7 @@ echo $WordPressAdminUserPassword
 echo $WordPressTablePrefix
 
 FullDomain=$5
-FullWebSiteUrl="http://$FullDomain"
+FullWebSiteUrl="https://$FullDomain"
 
 
 cd /var/www/$FullDomain/public_html
@@ -74,7 +74,7 @@ mv wp-config.php ../
 rm wp-config-sample.php
 
 cd
-cat $RepositoryDir/scripts/wp/assets/install.wp/wp-config.file.modifications.txt >> /var/www/$FullDomain/wp-config.php
+cat $RepositoryDir/wp/assets/install.wp/wp-config.file.modifications.txt >> /var/www/$FullDomain/wp-config.php
 
 cd /var/www/$FullDomain
 sudo chmod 440 wp-config.php

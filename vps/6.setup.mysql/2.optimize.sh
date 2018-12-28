@@ -15,7 +15,7 @@ vpsinstallerdir=$2
 cd
 
 updaterootuserfile="update.root.user.sql"
-cp $vpsinstallerdir/scripts/vps/6.setup.mysql/assets/$updaterootuserfile /home/$username/$updaterootuserfile
+cp $vpsinstallerdir/vps/6.setup.mysql/assets/$updaterootuserfile /home/$username/$updaterootuserfile
 sed -i -e 's:newuser:'$username':g' $updaterootuserfile
 
 # Connect to mysql as root and change the root username
@@ -35,7 +35,7 @@ mysql -u $username -p
 cd
 cd /etc/mysql/mysql.conf.d/
 sudo cp mysqld.cnf mysqld.cnf.bak
-sudo cp /home/$username/$vpsinstallerdir/scripts/vps/6.setup.mysql/assets/mysqld.cnf mysqld.cnf
+sudo cp /home/$username/$vpsinstallerdir/vps/6.setup.mysql/assets/mysqld.cnf mysqld.cnf
 
 sudo systemctl restart mysql
 mysqlcheck -u $username -p --all-databases
