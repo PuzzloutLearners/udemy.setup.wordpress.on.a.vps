@@ -57,14 +57,14 @@ echo $DatabaseName
 echo $DatabaseUsername
 echo $DatabaseRandomPassword
 
+cd
+ProjectRepository="ProjectRepository.Files"
+git clone https://gitlab.com/asteol-project/Project.Files $ProjectRepository
 
 # Prepare the SQL file
 #RepositoryDir=vpsinstaller
 if [ $Mode == "$ModeProd" ]
 	then
-		cd
-		ProjectRepository="ProjectRepository.Files"
-		git clone https://gitlab.com/asteol-project/Project.Files $ProjectRepository
 		mkdir $ProjectRepository/$ProjectId
 
 		TemplateDbCreationFilename="db.create.template.sql"
