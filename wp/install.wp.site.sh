@@ -44,12 +44,12 @@ ProjectId=$2
 RepositoryDir=$3
 ProjectTitle="Project_$ProjectId"
 
-WordPressUserRandomPassword=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$MaxRandomStringSizePasswordUsage};echo;)
-WordPressUserPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$MaxRandomStringSizeCommonUsage};echo;)
-DatabaseDetailPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-$MaxRandomStringSizeCommonUsage};echo;)
+WordPressUserRandomPassword=$(openssl rand -base64 $MaxRandomStringSizePasswordUsage)
+WordPressUserPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head $MaxRandomStringSizeCommonUsage)
+DatabaseDetailPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head $MaxRandomStringSizeCommonUsage)
 
-# a WordPress admin UnixUserName following this template: {the project id}_{the WordPress admin user prefix}
-WordPressAdminUnixUserName="$ProjectIdId"_"$WordPressUserPrefix"
+# a WordPress admin UserName following this template: {the project id}_{the WordPress admin user prefix}
+WordPressAdminUserName="$ProjectIdId"_"$WordPressUserPrefix"
 WordPressAdminUserPassword=$WordPressUserRandomPassword
 WordPressTablePrefix="$DatabaseDetailPrefix"_
 echo $WordPressAdminUnixUserName
@@ -63,8 +63,8 @@ FullWebSiteUrl="https://$FullDomain"
 cd /var/www/$FullDomain/public_html
 
 wp core download
-wp core config --dbname=$dbname --dbuser=$dbuser --dbpass=$dbuserpwd --dbprefix=$wptableprefix
-wp core install --url=$FullWebSiteUrl --title=$ProjectTitle --admin_user=$wpadmuser --admin_password=$wpadmuserpwd --admin_email=$ProjectAdminEmail
+wp core config --dbname=$dbname --dbuser=$dbuser --dbpass=$dbuserpwd --dbprefix=$WordPressTablePrefix
+wp core install --url=$FullWebSiteUrl --title=$ProjectTitle --admin_user=$WordPressAdminUserName --admin_password=$WordPressAdminUserPassword --admin_email=$ProjectAdminEmail
 
 sudo chown -R $UnixUserName:www-data /var/www/$FullDomain
 sudo find /var/www -type d -exec chmod 775 {} \;
