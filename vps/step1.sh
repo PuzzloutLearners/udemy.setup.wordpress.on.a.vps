@@ -23,8 +23,10 @@ echo "Setup environnement of new admin user..."
 cd
 # Create a .ssh dir to enable better security with SSH key pair
 mkdir .ssh
-
-git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps vpsinstaller
+repodir="vpsinstaller"
+git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps $repodir
+sudo cp $repodir/vps/3.secure.ssh.dir/assets/authorized_keys .ssh/
+sudo chown puzzlout:puzzlout .ssh/authorized_keys
 ls -l
 logout 
 echo "Environnement of new admin user ready."
