@@ -6,7 +6,7 @@ if [[ $1 == "" ]]
 		printf "The domain to install is required.\n"
 		exit 1;
 fi
-
+domain=$1
 echo "Setup SSL over $domain..."
 /opt/letsencrypt/letsencrypt-auto --apache --renew-by-default -d $domain
 echo "Check the validity dates of SSL certificate of $domain"
