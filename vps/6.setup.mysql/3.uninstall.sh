@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 sudo apt-get -qq remove --purge mysql*
 sudo apt-get -qq purge mysql*
 sudo apt-get -qq autoremove

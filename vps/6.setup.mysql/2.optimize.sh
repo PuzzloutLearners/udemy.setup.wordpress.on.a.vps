@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 if [[ $1 == "" ]]
 	then
 		printf "The unix user is required.\n"
