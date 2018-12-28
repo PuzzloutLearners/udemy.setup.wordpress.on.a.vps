@@ -8,7 +8,7 @@ echo "Try to view https://$domain1 in the browser!"
 
 domain2="asteolformation.puzzlout.com"
 bash $repodir/web/create.new.site.conf.sh $domain2 $repodir $username
-bash $repodir/web/enable.ssl.sh $domain3
+bash $repodir/web/enable.ssl.sh $domain2
 echo "Try to view https://$domain2 in the browser!"
 
 domain3="asteolstaging.puzzlout.com"
