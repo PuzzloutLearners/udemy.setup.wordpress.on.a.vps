@@ -50,7 +50,7 @@ printf "Running the script in Debug mode.\n"
 fi
 
 # Constants
-MaxRandomStringSizeCommonUsage=6
+MaxRandomStringSizeCommonUsage=c6
 MaxRandomStringSizePasswordUsage=16
 
 echo $MaxRandomStringSizeCommonUsage
