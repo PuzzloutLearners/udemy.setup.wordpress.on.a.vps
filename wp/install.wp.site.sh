@@ -147,7 +147,7 @@ echo "DbUserPassword is $DbUserPassword"
 
 # Test the credentials and run a query to check database exists.
 CheckDatabaseExistsQuery="SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$DbName';"
-mysql -u $DbUsername -p $DbUserPassword -e $CheckDatabaseExistsQuery
+mysql -u $DbUsername -p$DbUserPassword -e $CheckDatabaseExistsQuery
 
 if [ "$Mode" != "$ModeProd" ]
   then
