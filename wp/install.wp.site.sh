@@ -146,12 +146,14 @@ done
 echo "DbUserPassword is $DbUserPassword"
 
 # Test the credentials and run a query to check database exists.
-CheckDatabaseExistsQuery="SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$DbName'"
-mysql -u $DbUsername -p $DbUserPassword < $CheckDatabaseExistsQuery
+CheckDatabaseExistsQuery="SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$DbName';"
+mysql -u $DbUsername -p $DbUserPassword -e $CheckDatabaseExistsQuery
 
 if [ "$Mode" != "$ModeProd" ]
   then
     echo "Check that all is fine up to that point. If all is ok, run the same command with 'prod' parameter"
+	cd $ProjectFilesDir
+	git reset --hard HEAD
     exit 1;
 fi
 
