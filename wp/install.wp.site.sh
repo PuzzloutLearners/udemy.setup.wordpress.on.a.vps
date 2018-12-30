@@ -1,22 +1,26 @@
 #!/bin/bash
 # Input parameters
-if [[ $1 == "" ]]# Unix username
+# Unix username
+if [[ $1 == "" ]]
 	then
 printf "The unix username that will own the WordPress site is required.\n"
 exit 1;
 fi
-if [[ $2 == "" ]]# Project id
+# Project id
+if [[ $2 == "" ]]
 	then
 printf "Please provide a ProjectId value. It is used to create the database and the admin user.\n"
 exit 1;
 fi
-if [[ $3 == "" ]]# Directory containing the installer
+# Directory containing the installer
+if [[ $3 == "" ]]
 	then
 printf "Please provide a directory name of the git repo containing the installer.\n"
 exit 1;
 fi
+# Wordpress Admin e-mail
 DefaultEmail="puzzlout@gmail.com"
-if [[ $4 == "" ]]# Wordpress Admin e-mail
+if [[ $4 == "" ]]
 	then
 printf "No e-mail address provided. Using $DefaultEmail instead.\n"
 ProjectAdminEmail=$DefaultEmail
@@ -25,7 +29,8 @@ if [[ $4 != "" ]]
 	then
 ProjectAdminEmail=$4
 fi
-if [[ $5 == "" ]]# Full domain name
+# Full domain name
+if [[ $5 == "" ]]
 	then
 printf "Please provide a domain value where the website will be available.\n"
 exit 1;
