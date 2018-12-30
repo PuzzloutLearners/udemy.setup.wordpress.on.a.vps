@@ -58,7 +58,7 @@ ProjectInformationFilename="KeyInformation.md"
 MaxRandomStringSizeCommonUsage="-c6"
 # Max size the randomly generated password.
 MaxRandomStringSizePasswordUsage=16
-
+OutputStringSeperator=";"
 echo "MaxRandomStringSizeCommonUsage is $MaxRandomStringSizeCommonUsage"
 echo "MaxRandomStringSizePasswordUsage is $MaxRandomStringSizePasswordUsage"
 
@@ -91,25 +91,32 @@ if [ ! -e "$ProjectFilesDir/$ProjectInformationFilename"  ]
     touch $ProjectFilesDir/$ProjectInformationFilename
   else
 	echo "$ProjectFilesDir/$ProjectInformationFilename file already exist..."
+	rm $ProjectFilesDir/$ProjectInformationFilename
+    touch $ProjectFilesDir/$ProjectInformationFilename
 fi
 
-echo "UnixUserName: $UnixUserName" >> $ProjectFilesDir/$ProjectInformationFilename
-echo "ProjectId: $ProjectId" >> $ProjectFilesDir/$ProjectInformationFilename
-echo "ProjectTitle: $ProjectTitle" >> $ProjectFilesDir/$ProjectInformationFilename
-echo "WordPressAdminUserName: $WordPressAdminUserName" >> $ProjectFilesDir/$ProjectInformationFilename
-echo "WordPressUserRandomPassword: $WordPressUserRandomPassword" >> $ProjectFilesDir/$ProjectInformationFilename
-echo "WordPressTablePrefix: $WordPressTablePrefix" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "UnixUserName $OutputStringSeperator $UnixUserName" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "ProjectId $OutputStringSeperator $ProjectId" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "ProjectTitle $OutputStringSeperator $ProjectTitle" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "WordPressAdminUserName $OutputStringSeperator $WordPressAdminUserName" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "WordPressUserRandomPassword $OutputStringSeperator $WordPressUserRandomPassword" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "WordPressTablePrefix $OutputStringSeperator $WordPressTablePrefix" >> $ProjectFilesDir/$ProjectInformationFilename
 
 FullDomain=$5
-echo "FullDomain: $FullDomain" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "FullDomain $OutputStringSeperator $FullDomain" >> $ProjectFilesDir/$ProjectInformationFilename
 FullWebSiteUrl="https://$FullDomain"
-echo "FullWebSiteUrl: $FullWebSiteUrl" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "FullWebSiteUrl $OutputStringSeperator $FullWebSiteUrl" >> $ProjectFilesDir/$ProjectInformationFilename
 
 if [ "$Mode" != "$ModeProd" ]
   then
-    echo "Check that there is no error up to that point. If all is ok, run the same command with 'prod' parameter"
+    echo "Check that all is fine up to that point. If all is ok, run the same command with 'prod' parameter"
     exit 1;
 fi
+
+cd $ProjectFilesDir
+git add -A
+git commit -m "[bash] add $ProjectInformationFilename"
+git push
 
 cd /var/www/$FullDomain/public_html
 
