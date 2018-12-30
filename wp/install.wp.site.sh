@@ -50,20 +50,43 @@ printf "Running the script in Debug mode.\n"
 fi
 
 # Constants
+# Directory name where the project files are stored and versioned.
+ProjectRepoDir="ProjectRepository.Files"
+# Filename to store the project information
+ProjectInformationFilename="KeyInformation.md"
+# Argument to pass to the random string generator to define the max size of the output string.
 MaxRandomStringSizeCommonUsage="-c6"
+# Max size the randomly generated password.
 MaxRandomStringSizePasswordUsage=16
 
 echo $MaxRandomStringSizeCommonUsage
 echo $MaxRandomStringSizePasswordUsage
 
+ProjectFilesDir="$ProjectRepoDir/$ProjectId"
+if [ ! -d "$ProjectFilesDir" ]
+  then
+	echo "Creating $ProjectFilesDir directory"
+    mkdir $ProjectFilesDir
+  else
+	echo "$ProjectFilesDir directory already exist..."
+fi
+
+if [ ! -e "$ProjectFilesDir/$ProjectInformationFilename"  ]
+  then
+    echo "Creating the file $ProjectFilesDir/$ProjectInformationFilename file"
+    touch $ProjectFilesDir/$ProjectInformationFilename
+  else
+	echo "$ProjectFilesDir/$ProjectInformationFilename file already exist..."
+fi
+
 # Variables
 UnixUserName=$1
-echo "UnixUserName is $UnixUserName"
+echo "UnixUserName: $UnixUserName" >> $ProjectFilesDir/$ProjectInformationFilename
 ProjectId=$2
-echo "ProjectId is $ProjectId"
+echo "ProjectId: $ProjectId" >> $ProjectFilesDir/$ProjectInformationFilename
 RepositoryDir=$3
 ProjectTitle="Project_$ProjectId"
-echo "ProjectTitle is $ProjectTitle"
+echo "ProjectTitle: $ProjectTitle" >> $ProjectFilesDir/$ProjectInformationFilename
 
 WordPressUserRandomPassword=$(openssl rand -base64 $MaxRandomStringSizePasswordUsage)
 WordPressUserPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head $MaxRandomStringSizeCommonUsage)
@@ -71,15 +94,15 @@ DatabaseDetailPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head $MaxRandomStrin
 
 # a WordPress admin UserName following this template: {the project id}_{the WordPress admin user prefix}
 WordPressAdminUserName="$ProjectId"_"$WordPressUserPrefix"
-WordPressTablePrefix="$DatabaseDetailPrefix"_
-echo "WordPressAdminUserName is $WordPressAdminUserName"
-echo "WordPressUserRandomPassword is $WordPressUserRandomPassword"
-echo "WordPressTablePrefix is $WordPressTablePrefix"
+WordPressTablePrefix="$DatabaseDetailPrefix"_ >> $ProjectFilesDir/$ProjectInformationFilename
+echo "WordPressAdminUserName: $WordPressAdminUserName" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "WordPressUserRandomPassword: $WordPressUserRandomPassword" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "WordPressTablePrefix: $WordPressTablePrefix" >> $ProjectFilesDir/$ProjectInformationFilename
 
 FullDomain=$5
-echo "FullDomain is $FullDomain"
+echo "FullDomain: $FullDomain" >> $ProjectFilesDir/$ProjectInformationFilename
 FullWebSiteUrl="https://$FullDomain"
-echo "FullWebSiteUrl is $FullWebSiteUrl"
+echo "FullWebSiteUrl: $FullWebSiteUrl"
 
 if [ "$Mode" != "$ModeProd" ]
   then
