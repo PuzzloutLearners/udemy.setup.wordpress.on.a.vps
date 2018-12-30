@@ -24,7 +24,7 @@ if [[ "$4" == "$ModeProd" ]]
 		printf "Running the script in Production mode.\n"
 		Mode=$ModeProd
 fi
-if [[ "$4" == "$ModeProd" ]]
+if [[ "$4" != "$ModeProd" ]]
 	then
 		printf "Running the script in Debug mode.\n"
 fi
@@ -63,7 +63,7 @@ git clone https://gitlab.com/asteol-project/Project.Files $ProjectRepository
 
 # Prepare the SQL file
 #RepositoryDir=vpsinstaller
-if [ $Mode == "$ModeProd" ]
+if [ "$Mode" == "$ModeProd" ]
 	then
 		mkdir $ProjectRepository/$ProjectId
 

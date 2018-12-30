@@ -10,12 +10,8 @@ git config --global user.email puzzlout@gmail.com
 git clone https://github.com/PuzzloutLearners/udemy.setup.wordpress.on.a.vps $repodir
 
 # vps/1.check.updates/script.sh
-echo "Download the packages to update"
-sudo apt-get -qq update
-
-echo "Install the packages"
-sudo apt-get -qq upgrade
-sudo apt-get -qq dist-upgrade
+echo "Download and install all packages to update"
+sudo apt-get -qq update && sudo apt-get -qq upgrade && sudo apt-get -qq dist-upgrade
 
 username="puzzlout"
 bash $repodir/vps/2.add.new.admin.user/script.sh $username $repodir

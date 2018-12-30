@@ -1,34 +1,47 @@
 #!/bin/bash
 # Input parameters
-if [[ $1 == "" ]]
+if [[ $1 == "" ]]# Unix username
 	then
-		printf "The unix username that will own the WordPress site is required.\n"
-		exit 1;
+printf "The unix username that will own the WordPress site is required.\n"
+exit 1;
 fi
-if [[ $2 == "" ]]
+if [[ $2 == "" ]]# Project id
 	then
-		printf "Please provide a ProjectId value. It is used to create the database and the admin user.\n"
-		exit 1;
+printf "Please provide a ProjectId value. It is used to create the database and the admin user.\n"
+exit 1;
 fi
-if [[ $3 == "" ]]
+if [[ $3 == "" ]]# Directory containing the installer
 	then
-		printf "Please provide a directory name of the git repo containing the installer.\n"
-		exit 1;
+printf "Please provide a directory name of the git repo containing the installer.\n"
+exit 1;
 fi
 DefaultEmail="puzzlout@gmail.com"
-if [[ $4 == "" ]]
+if [[ $4 == "" ]]# Wordpress Admin e-mail
 	then
-		printf "No e-mail address provided. Using $DefaultEmail instead.\n"
-		ProjectAdminEmail=$DefaultEmail
+printf "No e-mail address provided. Using $DefaultEmail instead.\n"
+ProjectAdminEmail=$DefaultEmail
 fi
 if [[ $4 != "" ]]
 	then
-		ProjectAdminEmail=$4
+ProjectAdminEmail=$4
 fi
-if [[ $5 == "" ]]
+if [[ $5 == "" ]]# Full domain name
 	then
-		printf "Please provide a domain value where the website will be available.\n"
-		exit 1;
+printf "Please provide a domain value where the website will be available.\n"
+exit 1;
+fi
+ModeDebug="debug"
+ModeProd="prod"
+Mode=$ModeDebug
+#If Mode input 
+if [[ "$6" == "$ModeProd" ]]
+	then
+printf "Running the script in Production mode.\n"
+Mode=$ModeProd
+fi
+if [[ "$6" == "" ]]
+	then
+printf "Running the script in Debug mode.\n"
 fi
 
 # Constants
@@ -59,11 +72,16 @@ echo $WordPressTablePrefix
 FullDomain=$5
 FullWebSiteUrl="https://$FullDomain"
 
+if [ "$Mode" != "$ModeProd" ]
+  then
+    echo "Check that there is no error up to that point. If all is ok, run the same command with 'prod' parameter"
+    exit 1;
+fi
 
 cd /var/www/$FullDomain/public_html
 
 wp core download
-wp core config --dbname=$dbname --dbuser=$dbuser --dbpass=$dbuserpwd --dbprefix=$WordPressTablePrefix
+wp core config --dbname=$DbName --dbuser=$DbUsername --dbpass=$DbUserPassword --dbprefix=$WordPressTablePrefix
 wp core install --url=$FullWebSiteUrl --title=$ProjectTitle --admin_user=$WordPressAdminUserName --admin_password=$WordPressAdminUserPassword --admin_email=$ProjectAdminEmail
 
 sudo chown -R $UnixUserName:www-data /var/www/$FullDomain
