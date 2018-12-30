@@ -62,7 +62,7 @@ MaxRandomStringSizePasswordUsage=16
 echo $MaxRandomStringSizeCommonUsage
 echo $MaxRandomStringSizePasswordUsage
 
-ProjectFilesDir="$ProjectRepoDir/$ProjectId"
+ProjectFilesDir="$ProjectRepoDir/$ProjectId/"
 if [ ! -d "$ProjectFilesDir" ]
   then
 	echo "Creating $ProjectFilesDir directory"
