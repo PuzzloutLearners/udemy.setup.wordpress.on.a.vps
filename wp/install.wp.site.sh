@@ -107,6 +107,44 @@ echo "FullDomain $OutputStringSeperator $FullDomain" >> $ProjectFilesDir/$Projec
 FullWebSiteUrl="https://$FullDomain"
 echo "FullWebSiteUrl $OutputStringSeperator $FullWebSiteUrl" >> $ProjectFilesDir/$ProjectInformationFilename
 
+# Declare the dabatase name and user credentials
+DbName=""
+DbUsername=""
+DbUserPassword=""
+
+
+DbNameLine=$(find $ProjectFilesDir/$ProjectInformationFilename -type f -print | xargs grep "DbName")
+IFS=" ; " read -ra keyvalue <<< "$DbNameLine"
+for element in "${keyvalue[@]}"; do
+  if [ $element != "$DbName" ] 
+    then
+	  DbName=$element
+  fi
+done
+echo "DbName is $DbName"
+
+DbUsernameLine=$(find $ProjectFilesDir/$ProjectInformationFilename -type f -print | xargs grep "DbUsername")
+IFS=" ; " read -ra keyvalue <<< "$DbUsernameLine"
+for element in "${keyvalue[@]}"; do
+  if [ $element != "DbUsername" ] 
+    then
+	  DbUsername=$element
+  fi
+done
+echo "DbUsername is $DbUsername"
+
+DbUserPasswordLine=$(find $ProjectFilesDir/$ProjectInformationFilename -type f -print | xargs grep "DbUserPassword")
+IFS=" ; " read -ra keyvalue <<< "$DbUserPasswordLine"
+for element in "${keyvalue[@]}"; do
+  if [ $element != "DbUserPassword" ] 
+    then
+	  DbUserPassword=$element
+  fi
+done
+echo "DbUserPassword is $DbUserPassword"
+
+mysql -u $DbUsername -p $DbUserPassword
+
 if [ "$Mode" != "$ModeProd" ]
   then
     echo "Check that all is fine up to that point. If all is ok, run the same command with 'prod' parameter"
