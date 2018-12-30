@@ -162,6 +162,7 @@ git add -A
 git commit -m "[bash] add $ProjectInformationFilename"
 git push
 
+cd
 cd /var/www/$FullDomain/public_html
 
 wp core download
