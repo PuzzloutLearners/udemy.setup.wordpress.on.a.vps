@@ -76,6 +76,7 @@ DatabaseDetailPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head $MaxRandomStrin
 WordPressAdminUserName="$ProjectId"_"$WordPressUserPrefix"
 WordPressTablePrefix="$DatabaseDetailPrefix"_
 
+# Check the directory for ProjectId in the repository exists
 ProjectFilesDir="$ProjectRepoDir/$ProjectId"
 if [ ! -d "$ProjectFilesDir" ]
   then
@@ -84,17 +85,16 @@ if [ ! -d "$ProjectFilesDir" ]
   else
 	echo "$ProjectFilesDir directory already exist..."
 fi
-
+# Check the KeyInformation file for ProjectId in the repository exists
 if [ ! -e "$ProjectFilesDir/$ProjectInformationFilename"  ]
   then
     echo "Creating the file $ProjectFilesDir/$ProjectInformationFilename file"
     touch $ProjectFilesDir/$ProjectInformationFilename
   else
 	echo "$ProjectFilesDir/$ProjectInformationFilename file already exist..."
-	rm $ProjectFilesDir/$ProjectInformationFilename
-    touch $ProjectFilesDir/$ProjectInformationFilename
 fi
 
+# Add to KeyInformation file all the details.
 echo "UnixUserName $OutputStringSeperator $UnixUserName" >> $ProjectFilesDir/$ProjectInformationFilename
 echo "ProjectId $OutputStringSeperator $ProjectId" >> $ProjectFilesDir/$ProjectInformationFilename
 echo "ProjectTitle $OutputStringSeperator $ProjectTitle" >> $ProjectFilesDir/$ProjectInformationFilename
@@ -112,7 +112,7 @@ DbName=""
 DbUsername=""
 DbUserPassword=""
 
-
+# Find the database name value
 DbNameLine=$(find $ProjectFilesDir/$ProjectInformationFilename -type f -print | xargs grep "DbName")
 IFS=" ; " read -ra keyvalue <<< "$DbNameLine"
 for element in "${keyvalue[@]}"; do
@@ -123,6 +123,7 @@ for element in "${keyvalue[@]}"; do
 done
 echo "DbName is $DbName"
 
+# Find the database user value
 DbUsernameLine=$(find $ProjectFilesDir/$ProjectInformationFilename -type f -print | xargs grep "DbUsername")
 IFS=" ; " read -ra keyvalue <<< "$DbUsernameLine"
 for element in "${keyvalue[@]}"; do
@@ -133,6 +134,7 @@ for element in "${keyvalue[@]}"; do
 done
 echo "DbUsername is $DbUsername"
 
+# Find the database user password value
 DbUserPasswordLine=$(find $ProjectFilesDir/$ProjectInformationFilename -type f -print | xargs grep "DbUserPassword")
 IFS=" ; " read -ra keyvalue <<< "$DbUserPasswordLine"
 for element in "${keyvalue[@]}"; do
@@ -143,7 +145,9 @@ for element in "${keyvalue[@]}"; do
 done
 echo "DbUserPassword is $DbUserPassword"
 
-mysql -u $DbUsername -p $DbUserPassword
+# Test the credentials and run a query to check database exists.
+CheckDatabaseExistsQuery="SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$DbName'"
+mysql -u $DbUsername -p $DbUserPassword < $CheckDatabaseExistsQuery
 
 if [ "$Mode" != "$ModeProd" ]
   then

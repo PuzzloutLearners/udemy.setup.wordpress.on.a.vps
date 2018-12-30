@@ -33,12 +33,19 @@ echo "Defining RootMysqlUser"
 RootMysqlUser=$1
 echo "Defining ProjectId"
 ProjectId=$2
-echo "Defining RepositoryDir"
-RepositoryDir=$3
+echo "Defining InstallerRepositoryDir"
+InstallerRepositoryDir=$3
 
 # Constants
+# Directory name where the project files are stored and versioned.
+ProjectRepoDir="ProjectRepository.Files"
+# Filename to store the project information
+ProjectInformationFilename="KeyInformation.md"
+# Argument to pass to the random string generator to define the max size of the output string.
 MaxRandomStringSizeCommonUsage="-c6"
+# Max size the randomly generated password.
 MaxRandomStringSizePasswordUsage=16
+OutputStringSeperator=";"
 
 echo "MaxRandomStringSizeCommonUsage equals to $MaxRandomStringSizeCommonUsage"
 echo "MaxRandomStringSizePasswordUsage equals to $MaxRandomStringSizePasswordUsage"
@@ -57,23 +64,43 @@ echo $DatabaseName
 echo $DatabaseUsername
 echo $DatabaseRandomPassword
 
+ProjectFilesDir="$ProjectRepoDir/$ProjectId"
+if [ ! -d "$ProjectFilesDir" ]
+  then
+	echo "Creating $ProjectFilesDir directory"
+    git clone https://gitlab.com/asteol-project/Project.Files $ProjectRepoDir
+  else
+	echo "$ProjectFilesDir directory already exist..."
+fi
+# Check the KeyInformation file for ProjectId in the repository exists
+if [ ! -e "$ProjectFilesDir/$ProjectInformationFilename"  ]
+  then
+    echo "Creating the file $ProjectFilesDir/$ProjectInformationFilename file"
+    touch $ProjectFilesDir/$ProjectInformationFilename
+  else
+	echo "$ProjectFilesDir/$ProjectInformationFilename file already exist..."
+fi
+
+# Add to KeyInformation file all the details.
+echo "DbName $OutputStringSeperator $DatabaseName" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "DbUsername $OutputStringSeperator $DatabaseUsername" >> $ProjectFilesDir/$ProjectInformationFilename
+echo "DbUserPassword $OutputStringSeperator $DatabaseRandomPassword" >> $ProjectFilesDir/$ProjectInformationFilename
+
 cd
-ProjectRepository="ProjectRepository.Files"
-git clone https://gitlab.com/asteol-project/Project.Files $ProjectRepository
 
 # Prepare the SQL file
-#RepositoryDir=vpsinstaller
+#InstallerRepositoryDir=vpsinstaller
 if [ "$Mode" == "$ModeProd" ]
 	then
-		mkdir $ProjectRepository/$ProjectId
+		mkdir $ProjectRepoDir/$ProjectId
 
 		TemplateDbCreationFilename="db.create.template.sql"
 		ProjectWordPressDbCreationFilename="db.create.$ProjectId.sql"
 
 		cd #to make you are in Home dir of the connected UNIX user
-		cp $RepositoryDir/wp/assets/manage.db/$TemplateDbCreationFilename $ProjectRepository/$ProjectId/$ProjectWordPressDbCreationFilename
+		cp $InstallerRepositoryDir/wp/assets/manage.db/$TemplateDbCreationFilename $ProjectRepoDir/$ProjectId/$ProjectWordPressDbCreationFilename
 
-		cd $ProjectRepository/$ProjectId
+		cd $ProjectRepoDir/$ProjectId
 
 		sed -i -e 's:dbname:'$DatabaseName':g' $ProjectWordPressDbCreationFilename
 		sed -i -e 's:dbusername:'$DatabaseUsername':g' $ProjectWordPressDbCreationFilename
