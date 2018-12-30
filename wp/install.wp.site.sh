@@ -58,24 +58,28 @@ echo $MaxRandomStringSizePasswordUsage
 
 # Variables
 UnixUserName=$1
+echo "UnixUserName is $UnixUserName"
 ProjectId=$2
+echo "ProjectId is $ProjectId"
 RepositoryDir=$3
 ProjectTitle="Project_$ProjectId"
+echo "ProjectTitle is $ProjectTitle"
 
 WordPressUserRandomPassword=$(openssl rand -base64 $MaxRandomStringSizePasswordUsage)
 WordPressUserPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head $MaxRandomStringSizeCommonUsage)
 DatabaseDetailPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head $MaxRandomStringSizeCommonUsage)
 
 # a WordPress admin UserName following this template: {the project id}_{the WordPress admin user prefix}
-WordPressAdminUserName="$ProjectIdId"_"$WordPressUserPrefix"
-WordPressAdminUserPassword=$WordPressUserRandomPassword
+WordPressAdminUserName="$ProjectId"_"$WordPressUserPrefix"
 WordPressTablePrefix="$DatabaseDetailPrefix"_
-echo $WordPressAdminUnixUserName
-echo $WordPressAdminUserPassword
-echo $WordPressTablePrefix
+echo "WordPressAdminUserName is $WordPressAdminUserName"
+echo "WordPressUserRandomPassword is $WordPressUserRandomPassword"
+echo "WordPressTablePrefix is $WordPressTablePrefix"
 
 FullDomain=$5
+echo "FullDomain is $FullDomain"
 FullWebSiteUrl="https://$FullDomain"
+echo "FullWebSiteUrl is $FullWebSiteUrl"
 
 if [ "$Mode" != "$ModeProd" ]
   then
@@ -87,7 +91,7 @@ cd /var/www/$FullDomain/public_html
 
 wp core download
 wp core config --dbname=$DbName --dbuser=$DbUsername --dbpass=$DbUserPassword --dbprefix=$WordPressTablePrefix
-wp core install --url=$FullWebSiteUrl --title=$ProjectTitle --admin_user=$WordPressAdminUserName --admin_password=$WordPressAdminUserPassword --admin_email=$ProjectAdminEmail
+wp core install --url=$FullWebSiteUrl --title=$ProjectTitle --admin_user=$WordPressAdminUserName --admin_password=$WordPressUserRandomPassword --admin_email=$ProjectAdminEmail
 
 sudo chown -R $UnixUserName:www-data /var/www/$FullDomain
 sudo find /var/www -type d -exec chmod 775 {} \;
