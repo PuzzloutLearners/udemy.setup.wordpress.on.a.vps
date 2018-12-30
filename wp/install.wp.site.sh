@@ -74,7 +74,7 @@ DatabaseDetailPrefix=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head $MaxRandomStrin
 
 # a WordPress admin UserName following this template: {the project id}_{the WordPress admin user prefix}
 WordPressAdminUserName="$ProjectId"_"$WordPressUserPrefix"
-WordPressTablePrefix="$DatabaseDetailPrefix"_ >> $ProjectFilesDir/$ProjectInformationFilename
+WordPressTablePrefix="$DatabaseDetailPrefix"_
 
 ProjectFilesDir="$ProjectRepoDir/$ProjectId"
 if [ ! -d "$ProjectFilesDir" ]
